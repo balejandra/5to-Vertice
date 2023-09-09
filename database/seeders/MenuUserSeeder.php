@@ -226,7 +226,7 @@ class MenuUserSeeder extends Seeder
             'url' => 'proyectos/manag',
             'order' => '0',
             'parent' => $menugestion['id'],
-            'icono' => 'fa-sheet-plastic',
+            'icono' => 'fa fa-sheet-plastic',
         ]);
 
         $busqueda = Menu::create([

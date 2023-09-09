@@ -96,8 +96,8 @@ Route::middleware('auth')->group(function () {
     /*TIPO DESARROLLO*/
     Route::resource('tipoDesarrollos', TipoDesarrolloController::class);
 
-     /*FIN INVESTIGACION*/
-     Route::resource('finInvestigaciones', FinInvestigacionController::class);
+    /*FIN INVESTIGACION*/
+    Route::resource('finInvestigaciones', FinInvestigacionController::class);
 
     /*TIPO ACTIVIDAD*/
     Route::resource('tipoActividades', TipoActividadController::class);
