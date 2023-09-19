@@ -1,3 +1,9 @@
 {
-    "cSpell.language": "es-ES,es,en"
+    "cSpell.language": "es-ES,es,en",
+    "cSpell.languageSettings": [
+
+    ],
+    "cSpell.words": [
+        "endforeach"
+    ]
 }

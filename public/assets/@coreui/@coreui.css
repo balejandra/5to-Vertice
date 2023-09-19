@@ -71,7 +71,9 @@ input[type=date], input[type=datetime-local], input[type=month], input[type=time
 
 textarea {
     overflow: auto;
-    resize: vertical
+    resize: vertical;
+    height: auto !important;
+
 }
 
 fieldset {
@@ -1127,7 +1129,7 @@ a.btn.disabled, fieldset:disabled a.btn {
 
 .card-footer {
     padding: .75rem 1.25rem;
-    background-color: #f0f3f5;
+    background-color: #d2d8e7;
     border-top: 1px solid #c8ced3
 }
 

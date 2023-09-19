@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8" />
     <meta http-equiv='cache-control' content='no-cache'>
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
@@ -50,16 +50,19 @@
 </body>
 <!-- Scripts -->
 <script src="{{ asset('assets/jquery/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ asset('assets/jquery/momentjs.com.min.js') }}"></script>
 <script src="{{ asset('assets/bootstrap-5.3.1/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('assets/jquery/moment.min.js') }}"></script>
 <script src="{{ asset('assets/datatables/datatables.js') }}"></script>
+<script src="{{ asset('assets/datatables/DateTime-1.5.1/js/dataTables.dateTime.js') }}"></script>
 <script src="{{ asset('assets/fontawesome-6.4.2/js/all.js') }}"></script>
 <script src="{{ asset('assets/@coreui/coreui/js/coreui.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/@coreui/utils/js/coreui-utils.js') }}"></script>
 <script src="{{ asset('assets/simplebar/js/simplebar.min.js') }}"></script>
 <script src="{{ asset('assets/bootbox-6.0.0/bootbox.js') }}"></script>
 <script src="{{ asset('js/tables.js') }}"></script>
-<script src="{{asset('js/all-app.js')}}"></script>
+<script src="{{ asset('js/all-app.js') }}"></script>
+<script src="{{ asset('assets/datatables/datetime-moment.js') }}"></script>
+
 
 @stack('scripts')
 

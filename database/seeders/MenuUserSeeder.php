@@ -159,6 +159,14 @@ class MenuUserSeeder extends Seeder
             'icono' => 'fa fa-check',
         ]);
 
+        $lineaInvestigaciones = Menu::create([
+            'name' => 'Línea Investigación',
+            'url' => 'lineaInvestigaciones',
+            'order' => '8',
+            'parent' => $menutax['id'],
+            'icono' => 'fa fa-check',
+        ]);
+
         $menutaxonomia = [
             array('role_id' => '1', 'menu_id' => $menutax['id']),
             array('role_id' => '1', 'menu_id' => $origen['id']),
@@ -169,6 +177,7 @@ class MenuUserSeeder extends Seeder
             array('role_id' => '1', 'menu_id' => $tipoDesarrollo['id']),
             array('role_id' => '1', 'menu_id' => $finInvestigaciones['id']),
             array('role_id' => '1', 'menu_id' => $tipoActividad['id']),
+            array('role_id' => '1', 'menu_id' => $lineaInvestigaciones['id']),
         ];
         DB::table('menus_roles')->insert($menutaxonomia);
 
@@ -223,7 +232,7 @@ class MenuUserSeeder extends Seeder
         //Zarpe Nacional
         $proyectos = Menu::create([
             'name' => 'Proyectos',
-            'url' => 'proyectos/manag',
+            'url' => 'proyectos',
             'order' => '0',
             'parent' => $menugestion['id'],
             'icono' => 'fa fa-sheet-plastic',
@@ -231,7 +240,7 @@ class MenuUserSeeder extends Seeder
 
         $busqueda = Menu::create([
             'name' => 'Búsqueda',
-            'url' => 'busqueda',
+            'url' => 'proyectos/busqueda',
             'order' => '2',
             'parent' => $menugestion['id'],
             'icono' => 'fas fa-search-plus',

@@ -21,7 +21,7 @@ class Origen extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $connection = 'pgsql_taxonomia_schema';
-    public $table = 'funciones';
+    public $table = 'origenes';
 
     protected $dates = ['deleted_at'];
 

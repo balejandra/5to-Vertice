@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Proyectos\Proyecto;
 use App\Models\Publico\Estatus;
 use App\Models\Publico\Institucion;
 use App\Models\Publico\Menu;
@@ -7,6 +8,7 @@ use App\Models\Publico\RoleOwn;
 use App\Models\Taxonomia\CadenciaInvestigativa;
 use App\Models\Taxonomia\FinInvestigacion;
 use App\Models\Taxonomia\Funcion;
+use App\Models\Taxonomia\LineaInvestigacion;
 use App\Models\Taxonomia\Origen;
 use App\Models\Taxonomia\Participacion;
 use App\Models\Taxonomia\TipoActividad;
@@ -415,6 +417,72 @@ Breadcrumbs::for('tipoActividades.edit', function (BreadcrumbTrail $trail, TipoA
     $trail->push('Editar Tipo de Actividad', route('tipoActividades.edit', $tipoActividad->id));
 });
 
+//LINEAS INVESTIGACION
+// Migas de pan para la ruta 'lineaInvestigaciones.index'
+Breadcrumbs::for('lineaInvestigaciones.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard'); // Reemplaza 'dashboard' por la ruta adecuada si es necesario.
+    $trail->push('Líneas de Investigación', route('lineaInvestigaciones.index'));
+});
+
+// Migas de pan para la ruta 'lineaInvestigaciones.create'
+Breadcrumbs::for('lineaInvestigaciones.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('lineaInvestigaciones.index');
+    $trail->push('Crear Línea de Investigación', route('lineaInvestigaciones.create'));
+});
+
+// Migas de pan para la ruta 'lineaInvestigaciones.show'
+Breadcrumbs::for('lineaInvestigaciones.show', function (BreadcrumbTrail $trail, LineaInvestigacion $lineaInvestigacion) {
+    $trail->parent('lineaInvestigaciones.index');
+    $trail->push($lineaInvestigacion->nombre, route('lineaInvestigaciones.show', $lineaInvestigacion->id));
+});
+
+// Migas de pan para la ruta 'lineaInvestigaciones.edit'
+Breadcrumbs::for('lineaInvestigaciones.edit', function (BreadcrumbTrail $trail, LineaInvestigacion $lineaInvestigacion) {
+    $trail->parent('lineaInvestigaciones.index');
+    $trail->push('Editar Línea de Investigación', route('lineaInvestigaciones.edit', $lineaInvestigacion->id));
+});
 
 
 
+//PROYECTOS
+// Migas de pan para la ruta 'proyectos.index'
+Breadcrumbs::for('proyectos.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard'); // Reemplaza 'dashboard' por la ruta adecuada si es necesario.
+    $trail->push('Proyectos', route('proyectos.index'));
+});
+
+
+// Migas de pan para la ruta 'proyectos.show'
+Breadcrumbs::for('proyectos.show', function (BreadcrumbTrail $trail, Proyecto $proyecto) {
+    $trail->parent('proyectos.index');
+    $trail->push($proyecto->nombre, route('proyectos.show', $proyecto->id));
+});
+
+// Migas de pan para la ruta 'proyectos.edit'
+Breadcrumbs::for('proyectos.edit', function (BreadcrumbTrail $trail, Proyecto $proyecto) {
+    $trail->parent('proyectos.index');
+    $trail->push('Editar Proyecto', route('proyectos.edit', $proyecto->id));
+});
+
+
+// Migas de pan para la ruta 'proyectos.create'
+Breadcrumbs::for('proyectos.step1', function (BreadcrumbTrail $trail) {
+    $trail->parent('proyectos.index');
+    $trail->push('Paso 1 - Datos', route('proyectos.step1'));
+});
+
+
+Breadcrumbs::for('proyectos.step2', function (BreadcrumbTrail $trail) {
+    $trail->parent('proyectos.index');
+    $trail->push('Paso 2 - Contenido', route('proyectos.step2'));
+});
+
+Breadcrumbs::for('proyectos.step3', function (BreadcrumbTrail $trail) {
+    $trail->parent('proyectos.index');
+    $trail->push('Paso 3 - Personal', route('proyectos.step3'));
+});
+
+Breadcrumbs::for('proyectos.step4', function (BreadcrumbTrail $trail) {
+    $trail->parent('proyectos.index');
+    $trail->push('Paso 4 - Taxonomía', route('proyectos.step4'));
+});

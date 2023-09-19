@@ -65,9 +65,6 @@ Route::middleware('auth')->group(function () {
     Route::get('auditables', [AuditsController::class, 'index'])->name('auditables.index');
     Route::get('auditables/{id}', [AuditsController::class, 'show'])->name('auditables.show');
 
-    /*ESTATUS*/
-    Route::resource('estatus', EstatusController::class);
-
     /*USER*/
     Route::resource('users', UserController::class);
     Route::get('userDelete.index', [UserController::class, 'indexUserDeleted'])->name('userDelete.index');
@@ -78,29 +75,6 @@ Route::middleware('auth')->group(function () {
     Route::get('institucionDeleted.index', [InstitucionController::class, 'indexInstitucionDeleted'])->name('institucionDeleted.index');
     Route::get('institucionDeleted/{institucione}', [InstitucionController::class, 'restoreInstitucionDeleted'])->name('institucionDeleted.restore');
 
-    /*ORIGENES*/
-    Route::resource('origenes', OrigenController::class);
-
-    /*FUNCIONES*/
-    Route::resource('funciones', FuncionController::class);
-
-    /*TIPO INVESTIGACION*/
-    Route::resource('tipoInvestigaciones', TipoInvestigacionController::class);
-
-    /*PARTICIPACION*/
-    Route::resource('participaciones', ParticipacionController::class);
-
-    /*CADENCIA INVESTIGATIVA*/
-    Route::resource('cadenciaInvestigativas', CadenciaInvestigativaController::class);
-
-    /*TIPO DESARROLLO*/
-    Route::resource('tipoDesarrollos', TipoDesarrolloController::class);
-
-    /*FIN INVESTIGACION*/
-    Route::resource('finInvestigaciones', FinInvestigacionController::class);
-
-    /*TIPO ACTIVIDAD*/
-    Route::resource('tipoActividades', TipoActividadController::class);
 
 });
 
