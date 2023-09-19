@@ -147,6 +147,14 @@ class PermissionSeeder extends Seeder
             'consultar-fininvestigacion',
             'eliminar-fininvestigacion',
 
+            // Categoría: Fin de Investigación
+            'listar-lineainvestigacion',
+            'crear-lineainvestigacion',
+            'editar-lineainvestigacion',
+            'consultar-lineainvestigacion',
+            'eliminar-lineainvestigacion',
+
+
             // Categoría: Tipo de Actividad
             'listar-tipoactividad',
             'crear-tipoactividad',

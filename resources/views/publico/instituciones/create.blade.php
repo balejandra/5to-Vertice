@@ -18,11 +18,11 @@
                             <div class="row justify-content-center">
 
                                 <div class="col-md-8 border rounded p-3">
-                                    {!! Form::open(['route' => 'instituciones.store']) !!}
+                                    <form action="{{ route('instituciones.store') }}" method="post">
+                                        @csrf
+                                        @include('publico.instituciones.fields')
 
-                                    @include('publico.instituciones.fields')
-
-                                    {!! Form::close() !!}
+                                    </form>
                                 </div>
                             </div>
 

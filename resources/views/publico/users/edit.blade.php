@@ -16,7 +16,8 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {!! Form::model($user, ['route' => ['users.update', $user->id], 'method' => 'patch']) !!}
+                            {{ html()->modelForm($user, 'PUT', route('users.update', [$user->id]))->open() }}
+
                             <div class="row">
                                 <div class="col-md-3"></div>
                                 <div class="col-md-6  border rounded p-3">
@@ -27,7 +28,7 @@
                                 <div class="col-md-3"></div>
                             </div>
 
-                            {!! Form::close() !!}
+                            {{ html()->closeModelForm() }}
                         </div>
                     </div>
                 </div>

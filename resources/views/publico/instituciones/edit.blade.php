@@ -18,12 +18,11 @@
                             <div class="row">
                                 <div class="col-md-2"></div>
                                 <div class="col-md-8 border rounded p-3">
+                                    {{ html()->modelForm($institucion, 'PUT', route('instituciones.update', [$institucion->id]))->open() }}
 
-                                    {!! Form::model($institucion, ['route' => ['instituciones.update', $institucion->id], 'method' => 'patch']) !!}
+                                    @include('publico.instituciones.fields')
 
-                                    @include('publico.instituciones.fieldsedit')
-
-                                    {!! Form::close() !!}
+                                    {{ html()->closeModelForm() }}
                                 </div>
                                 <div class="col-md-2"></div>
                             </div>

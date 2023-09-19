@@ -16,11 +16,10 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {!! Form::model($status, ['route' => ['estatus.update', $status->id], 'method' => 'patch']) !!}
-
+                            {{ html()->modelForm($status, 'PUT', route('estatus.update', [$status->id]))->open() }}
                             @include('publico.estatus.fields')
 
-                            {!! Form::close() !!}
+                            {{ html()->closeModelForm() }}
                         </div>
                     </div>
                 </div>

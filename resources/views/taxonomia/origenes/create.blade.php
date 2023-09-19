@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('titulo')
-Origen
+    Origen
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -16,11 +16,10 @@ Origen
                             </div>
                         </div>
                         <div class="card-body">
-                            {!! Form::open(['route' => 'origenes.store']) !!}
-
-                            @include('taxonomia.origenes.fields')
-
-                            {!! Form::close() !!}
+                            <form action="{{ route('origenes.store') }}" method="post">
+                                @csrf
+                                @include('taxonomia.origenes.fields')
+                            </form>
                         </div>
                     </div>
                 </div>

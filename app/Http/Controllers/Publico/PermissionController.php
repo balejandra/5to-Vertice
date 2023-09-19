@@ -59,7 +59,7 @@ class PermissionController extends Controller
         ($permission = new PermissionOwn($request->input()))->saveOrFail();
         Flash::success('Permiso guardado satisfactoriamente.');
 
-        return redirect(route('permissions'));
+        return redirect(route('permissions.index'));
 
     }
 
@@ -97,7 +97,7 @@ class PermissionController extends Controller
         $permission->name = $request->input('name');
         $permission->save();
         Flash::success('Permiso actualizado satisfactoriamente.');
-        return redirect(route('permissions'));
+        return redirect(route('permissions.index'));
     }
 
     /**

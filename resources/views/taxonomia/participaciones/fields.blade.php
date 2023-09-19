@@ -3,18 +3,15 @@
     <div class="col-lg-4 col-md-6 col-sm-12">
         <div class="row border p-3">
             <div class="form-group col-lg-12 col-sm-6">
-                {!! Form::label('nombre', 'Nombre:') !!}
-                {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
+                <label for="nombre">Nombre:</label>
+                <input type="text" name="nombre" class="form-control" value="{{ $participacion->nombre ?? '' }}">
             </div>
-
-            <!-- Agregar más campos y campos personalizados si es necesario -->
-
-            <!-- Submit Field -->
+            <!-- Otros campos de participación aquí si es necesario -->
             <div class="form-group col text-center">
-                <a href="{{ route('participaciones.index') }}" class="btn  btncancelarZarpes">Cancelar</a>
+                <a href="{{ route('participaciones.index') }}" class="btn btncancelarZarpes">Cancelar</a>
             </div>
             <div class="form-group col text-center">
-                {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
+                <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </div>

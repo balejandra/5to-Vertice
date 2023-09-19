@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('titulo')
-Origen
+    Origen
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -16,11 +16,11 @@ Origen
                             </div>
                         </div>
                         <div class="card-body">
-                            {!! Form::model($origenes, ['route' => ['origenes.update', $origenes->id], 'method' => 'patch']) !!}
+                            {{ html()->modelForm($origenes, 'PUT', route('origenes.update', [$origenes->id]))->open() }}
 
                             @include('taxonomia.origenes.fields')
 
-                            {!! Form::close() !!}
+                            {{ html()->closeModelForm() }}
                         </div>
                     </div>
                 </div>

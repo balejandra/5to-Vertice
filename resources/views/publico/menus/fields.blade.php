@@ -1,71 +1,70 @@
 <!-- Enabled Field -->
 <div class="form-group row">
-    {!! Form::label('name', 'Roles:') !!}
-
-
+    <label for="name">Roles:</label>
     @foreach ($roles as $key => $item)
         <div class="form-check form-switch col-sm-6 ">
-                <input class="form-check-input" type="checkbox" name="role[]" id='role' value="{{$item->id}}"  style="margin-left: auto;" {{$item->checked}}>
-                <label class="form-check-label" for="flexSwitchCheckDefault" style="margin-inline-start: 30px;">{{$item->name}} </label>
+            <input class="form-check-input" type="checkbox" name="role[]" id='role' value="{{ $item->id }}"
+                style="margin-left: auto;" {{ $item->checked }}>
+            <label class="form-check-label" for="flexSwitchCheckDefault"
+                style="margin-inline-start: 30px;">{{ $item->name }} </label>
         </div>
     @endforeach
 </div>
 <!-- Name Field -->
 <div class="form-group row">
     <div class="form-group col-sm-6">
-        {!! Form::label('name', 'Nombre:') !!}
-        {!! Form::text('name', null, ['class' => 'form-control']) !!}
+        <label for="name">Nombre:</label>
+        <input type="text" name="name" id="name" class="form-control" value="{{ $menu->name ?? '' }}">
     </div>
 
     <!-- Description Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('description', 'Descripción:') !!}
-        {!! Form::text('description', null, ['class' => 'form-control']) !!}
+        <label for="description">Descripción:</label>
+        <input type="text" name="description" id="description" class="form-control"
+            value="{{ $menu->description ?? '' }}">
     </div>
 </div>
 <div class="form-group row">
     <!-- Url Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('url', 'URL:') !!}
-        {!! Form::text('url', null, ['class' => 'form-control']) !!}
+        <label for="url">URL:</label>
+        <input type="text" name="url" id="url" class="form-control" value="{{ $menu->url ?? '' }}">
     </div>
     <div class="form-group col-sm-6">
-        {!! Form::label('parent', 'Menú padre:') !!}
-        {!! Form::select('parent', $parent, null, ['class' => 'form-control','placeholder' => 'Seleccione un padre']) !!}
+        <label for="parent">Menú padre:</label>
+        {{ html()->select()->name('parent')->options($parent)->value($menu->parent ?? '')->placeholder('Seleccion un menu padre')->class('form-control')->render() }}
     </div>
 </div>
 <div class="form-group row">
-<!-- Order Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('order', 'Orden:') !!}
-    {!! Form::number('order', null, ['class' => 'form-control']) !!}
-</div>
+    <!-- Order Field -->
+    <div class="form-group col-sm-6">
+        <label for="order">Orden:</label>
+        <input type="number" name="order" id="order" class="form-control" value="{{ $menu->order ?? '' }}">
+    </div>
 
-<!-- Icono Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('icono', 'Icono:') !!}
-    {!! Form::text('icono', null, ['class' => 'form-control']) !!}
-</div>
+    <!-- Icono Field -->
+    <div class="form-group col-sm-6">
+        <label for="icono">Icono:</label>
+        <input type="text" name="icono" id="icono" class="form-control" value="{{ $menu->icono ?? '' }}">
+    </div>
 </div>
 <!-- Enabled Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('enabled', 'Habilitado:') !!}
-    <label class="checkbox-inline">
-        {!! Form::hidden('enabled', 0) !!}
-        {!! Form::checkbox('enabled', '1', true) !!}
+    {{ html()->checkbox('enabled')->checked($menu->enabled ?? '')->class('checkbox-inline') }}
+    <label class="checkbox-inline" for="flexCheckDefault">
+        Habilitado:
     </label>
 </div>
 
 
 <!-- Submit Field -->
 <div class="row form-group">
-<div class="col text-center">
-<a href= "{{route('menus.index')}}   " class="btn btn-ligth btncancelarZarpes ">Cancelar</a>
+    <div class="col text-center">
+        <a href="{{ route('menus.index') }}   " class="btn btn-ligth btncancelarZarpes ">Cancelar</a>
+
+    </div>
+    <div class="col text-center">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
 
 </div>
-<div class="col text-center">
-    {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
-</div>
-
-</div>
-

@@ -20,99 +20,87 @@
                             <div class="row ">
                                 <div class="col-md-3"></div>
                                 <div class="col-md-6 border rounded p-3">
-
-
-                                    {!! Form::open(['route' => 'users.store']) !!}
-                                    <div class="row">
-                                        <div class="form-group col-sm-12">
-                                            {!! Form::label('email', 'Email:') !!}
-                                            <input type="email"
-                                                class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
-                                                name="email" value="{{ old('email') }}" placeholder="Email" required>
-                                            @error('email')
-                                                <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
+                                    <form method="POST" action="{{ route('users.store') }}">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="email">Email:</label>
+                                                <input type="email"
+                                                    class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                                    name="email" value="{{ old('email') }}" placeholder="Email" required>
+                                                @error('email')
+                                                    <span class="error invalid-feedback">{{ $message }}</span>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
+                                        <div class="row">
 
-                                        <!-- Nombres Field -->
-                                        <div class="form-group col-sm-6">
-                                            {!! Form::label('nombres', 'Nombres:') !!}
-                                            {!! Form::text('nombres', null, ['class' => 'form-control', 'required', 'placeholder' => 'Nombres']) !!}
+                                            <!-- Nombres Field -->
+                                            <div class="form-group col-sm-6">
+                                                <label for="nombres">Nombres:</label>
+                                                <input type="text" name="nombres" required placeholder="Nombres"
+                                                    class="form-control">
+                                            </div>
+                                            <!-- Apellidos Field -->
+                                            <div class="form-group col-sm-6">
+                                                <label for="apellidos">Apellidos:</label>
+                                                <input type="text" name="apellidos" required placeholder="Apellidos"
+                                                    class="form-control">
+                                            </div>
                                         </div>
-                                        <!-- Apellidos Field -->
-                                        <div class="form-group col-sm-6">
-                                            {!! Form::label('apellidos', 'Apellidos:') !!}
-                                            {!! Form::text('apellidos', null, ['class' => 'form-control', 'required', 'placeholder' => 'Apellidos']) !!}
-                                        </div>
-                                    </div>
-                                    <!-- Email Field -->
+                                        <!-- Email Field -->
 
-                                    <div class="row">
-                                        <!-- Password Field -->
-                                        <div class="form-group col-sm-6">
-                                            {!! Form::label('password', 'Contraseña:') !!}
-                                            <input type="password" placeholder="Contraseña"
-                                                class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
-                                                id="password" name="password" required>
-                                            @error('password')
-                                                <span class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-6">
-
-                                            {!! Form::label('password', 'Confirmar Contraseña:') !!}
-                                            <input type="password" name="password_confirmation" class="form-control"
-                                                required placeholder={{ __('Confirm Password') }}>
-                                        </div>
-                                    </div>
-
-                                    <br>
-                                    <div class="row">
-                                        <div class="form-group col-sm-6">
-                                            {!! Form::label('role id', 'Rol asignado:') !!}
-
-                                            {!! Form::select('roles', $roles, null, [
-                                                'class' => 'form-control custom-select',
-                                                'placeholder' => 'Puede asignar un Rol...',
-                                                'required',
-                                                'title' => 'Si no encuentra el Rol en el listado, asegúrese que el mismo tenga un Menú asociado ',
-                                            ]) !!}
-                                            <small class="text-muted fw-lighter">Si no encuentra el Rol en el listado,
-                                                asegúrese
-                                                que el mismo tenga un Menú asociado</small>
+                                        <div class="row">
+                                            <!-- Password Field -->
+                                            <div class="form-group col-sm-6">
+                                                <label for="password">Contraseña:</label>
+                                                <input type="password" placeholder="Contraseña"
+                                                    class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                                    id="password" name="password" required>
+                                                @error('password')
+                                                    <span class="error invalid-feedback">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="password_confirmation">Confirmar Contraseña:</label>
+                                                <input type="password" name="password_confirmation" class="form-control"
+                                                    required placeholder={{ __('Confirm Password') }}>
+                                            </div>
                                         </div>
 
-                                        <div class="form-group col-sm-6">
-                                            {!! Form::label('role id', 'Institución Asignada:') !!}
+                                        <br>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="rol">Rol asignado:</label>
+                                                {{ html()->select()->name('roles')->options($roles)->class('form-control custom-select')->placeholder('Puede asignar un Rol...')->required()->render() }}
 
-                                            {!! Form::select('institucion_id', $instituciones, null, [
-                                                'class' => 'form-control custom-select',
-                                                'placeholder' => 'Puede asignar una Institución...',
-                                                'required',
-                                            ]) !!}
+                                                <small class="text-muted fw-lighter">Si no encuentra el Rol en el listado,
+                                                    asegúrese
+                                                    que el mismo tenga un Menú asociado</small>
+                                            </div>
 
+                                            <div class="form-group col-sm-6">
+                                                <label for="institucion">Institución Asignada:</label>
+                                                {{ html()->select()->name('institucion_id')->options($instituciones)->class('form-control custom-select')->placeholder('Puede asignar una Institución...')->required()->render() }}
+
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- Submit Field -->
+                                        <!-- Submit Field -->
 
 
-                                    <div class="row form-group mt-4">
-                                        <div class="col text-center">
-                                            <a href="{{ route('users.index') }} "
-                                                class="btn btn-primary btncancelarZarpes">Cancelar</a>
+                                        <div class="row form-group mt-4">
+                                            <div class="col text-center">
+                                                <a href="{{ route('users.index') }} "
+                                                    class="btn btn-primary btncancelarZarpes">Cancelar</a>
+                                            </div>
+                                            <div class=" col text-center">
+                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                            </div>
                                         </div>
-                                        <div class=" col text-center">
-                                            {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
-                                        </div>
-                                    </div>
 
-                                    <input type="text" name="tipo_usuario" value="Usuario Interno" hidden>
+                                        <input type="text" name="tipo_usuario" value="Usuario Interno" hidden>
 
-                                    {!! Form::close() !!}
-
-
+                                    </form>
                                 </div>
                                 <div class="col-md-3"></div>
                             </div>

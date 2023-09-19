@@ -126,6 +126,7 @@ class UserController extends Controller
     {
         $roles = Role::pluck('name', 'id');
         $user1 = $this->userRepository->find($user->id);
+        $roleUser = $user1->roles;
         $instituciones = Institucion::pluck('nombre', 'id');
 
         if (empty($user1)) {
@@ -137,6 +138,7 @@ class UserController extends Controller
         return view('publico.users.edit')
             ->with('user', $user1)
             ->with('roles', $roles)
+            ->with('roleUser', $roleUser)
             ->with('instituciones', $instituciones);
     }
 

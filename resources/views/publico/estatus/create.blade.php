@@ -16,11 +16,11 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {!! Form::open(['route' => 'estatus.store']) !!}
+                            <form method="POST" action={{ route('estatus.store') }}>
+                                @csrf
+                                @include('publico.estatus.fields')
+                            </form>
 
-                            @include('publico.estatus.fields')
-
-                            {!! Form::close() !!}
                         </div>
                     </div>
                 </div>

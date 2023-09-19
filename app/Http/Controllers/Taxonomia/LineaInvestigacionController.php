@@ -59,9 +59,9 @@ class LineaInvestigacionController extends Controller
     /**
      * Display the specified LineaInvestigacion.
      */
-    public function show(LineaInvestigacion $lineaInvestigacion)
+    public function show(LineaInvestigacion $lineaInvestigacione)
     {
-        $lineaInvestigacion = LineaInvestigacion::find($lineaInvestigacion->id);
+        $lineaInvestigacion = LineaInvestigacion::find($lineaInvestigacione->id);
 
         if (empty($lineaInvestigacion)) {
             Flash::error('Línea de Investigación no encontrada');
@@ -75,9 +75,9 @@ class LineaInvestigacionController extends Controller
     /**
      * Show the form for editing the specified LineaInvestigacion.
      */
-    public function edit(LineaInvestigacion $lineaInvestigacion)
+    public function edit(LineaInvestigacion $lineaInvestigacione)
     {
-        $lineaInvestigacion = LineaInvestigacion::find($lineaInvestigacion->id);
+        $lineaInvestigacion = LineaInvestigacion::find($lineaInvestigacione->id);
 
         if (empty($lineaInvestigacion)) {
             Flash::error('Línea de Investigación no encontrada');

@@ -1,29 +1,27 @@
 @extends('layouts.app')
 
 @section('titulo')
-    Línea de Investigaciones
+    Líneas de Investigación
 @endsection
 
 @section('content')
     <div class="container-fluid">
         <div class="animated fadeIn">
+            @include('flash::message')
             <div class="row">
                 <div class="col-lg-12">
-                    <div class card>
+                    <div class="card">
                         <div class="card-header">
                             <i class="fa fa-check fa-lg"></i>
                             <strong>Editar Línea de Investigación</strong>
                             <div class="card-header-actions">
-                                <!-- Agregar acciones si es necesario -->
+
                             </div>
                         </div>
                         <div class="card-body">
-                            {!! Form::model($lineaInvestigacion, [
-                                'route' => ['lineaInvestigaciones.update', $lineaInvestigacion->id],
-                                'method' => 'patch',
-                            ]) !!}
+                            {{ html()->modelForm($lineaInvestigacion, 'PUT', route('lineaInvestigaciones.update', [$lineaInvestigacion->id]))->open() }}
                             @include('taxonomia.linea_investigaciones.fields')
-                            {!! Form::close() !!}
+                            {{ html()->closeModelForm() }}
                         </div>
                     </div>
                 </div>

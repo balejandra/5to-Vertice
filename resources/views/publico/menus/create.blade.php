@@ -18,11 +18,10 @@
                             <div class="row">
                                 <div class="col-lg-2 col-md-3"></div>
                                 <div class=" border col-lg-8 col-md-12 col-sm-12 col-xs-12 p-3">
-                                    {!! Form::open(['route' => 'menus.store']) !!}
-
-                                    @include('publico.menus.fields')
-
-                                    {!! Form::close() !!}
+                                    <form method="POST" action="{{ route('menus.store') }}">
+                                        @csrf
+                                        @include('publico.menus.fields')
+                                    </form>
                                 </div>
                                 <div class=" col-lg-2 col-md-3"></div>
                             </div>

@@ -1,9 +1,9 @@
 <!-- Email Field -->
 <div class="row">
     <div class="form-group col-sm-12">
-        {!! Form::label('email', 'Email:') !!}
+        <label for="email">Email:</label>
         <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" name="email"
-            value="{{ $user->email }}" placeholder="Email" required>
+            value="{{ $user->email ?? '' }}" placeholder="Email" required>
         @error('email')
             <span class="error invalid-feedback">{{ $message }}</span>
         @enderror
@@ -12,14 +12,16 @@
 <div class="row">
     <!-- Nombres Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('nombres', 'Nombres:') !!}
-        {!! Form::text('nombres', null, ['class' => 'form-control', 'required']) !!}
+        <label for="nombres">Nombres:</label>
+        <input type="text" name="nombres" value="{{ $user->nombres ?? '' }}"required placeholder="Nombres"
+            class="form-control">
     </div>
 
     <!-- Apellidos Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('apellidos', 'Apellidos:') !!}
-        {!! Form::text('apellidos', null, ['class' => 'form-control', 'required']) !!}
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" name="apellidos" value="{{ $user->apellidos ?? '' }}" required placeholder="Apellidos"
+            class="form-control">
     </div>
 </div>
 
@@ -32,14 +34,13 @@
                 Cambiar Contraseña
             </label>
         </div>
-
     </div>
 </div>
 <div id="password-div" style="display: none">
     <!-- Password Field -->
     <div class="row">
         <div class="form-group col-sm-6">
-            {!! Form::label('password', 'Contraseña:') !!}
+            <label for="password">Contraseña:</label>
             <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
                 id="password" name="password">
             @error('password')
@@ -47,34 +48,24 @@
             @enderror
         </div>
         <div class="form-group col-sm-6">
-            {!! Form::label('password', 'Confirmar Contraseña:') !!}
+            <label for="password_confirmation">Confirmar Contraseña:</label>
             <input type="password" name="password_confirmation" class="form-control"
                 placeholder={{ __('Confirm Password') }}>
         </div>
     </div>
-
 </div>
 
 <div class="row">
     <div class="form-group col-sm-6">
-        {!! Form::label('role id', 'Rol asignado:') !!}
-        {!! Form::select('roles', $roles, null, [
-            'class' => 'form-control custom-select',
-            'placeholder' => 'Puede asignar un Rol...',
-            'title' => 'Si no encuentra su Rol en el listado, asegúrese que el mismo tenga un Menú asociado ',
-        ]) !!}
+        <label for="rol">Rol asignado:</label>
+        {{ html()->select()->name('roles')->options($roles)->value($roleUser[0]->id ?? '')->class('form-control custom-select')->placeholder('Puede asignar un Rol...')->required()->render() }}
+
         <small class="text-muted fw-lighter">Si no encuentra su Rol en el listado, asegúrese que el mismo tenga un Menú
             asociado</small>
     </div>
     <div class="form-group col-sm-6">
-        {!! Form::label('role id', 'Institución Asignada:') !!}
-
-        {!! Form::select('institucion_id', $instituciones, null, [
-            'class' => 'form-control custom-select',
-            'placeholder' => 'Puede asignar una Institución...',
-            'required',
-        ]) !!}
-
+        <label for="institucion">Institución Asignada:</label>
+        {{ html()->select()->name('institucion_id')->options($instituciones)->value($user->institucion_id ?? '')->class('form-control custom-select')->placeholder('Puede asignar una Institución...')->required()->render() }}
     </div>
 </div>
 
@@ -86,7 +77,7 @@
         <a href="{{ route('users.index') }} " class="btn btn-primary btncancelarZarpes">Cancelar</a>
     </div>
     <div class=" col text-center">
-        {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
+        <button type="submit" class="btn btn-primary">Guardar</button>
     </div>
 </div>
 <input type="text" name="tipo_usuario" value="Usuario Interno" hidden>

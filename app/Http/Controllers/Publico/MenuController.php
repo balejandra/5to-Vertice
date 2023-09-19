@@ -66,7 +66,7 @@ class MenuController extends Controller
     /**
      * Store a newly created Menu in storage.
      */
-    public function store(Request $request):RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate(
             [
@@ -131,7 +131,7 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
-        $id=$menu->id;
+        $id = $menu->id;
         $parents = Menu::where('enabled', 1)->orderBy('id')->get();
         $noparent = ['0' => 'Menu Padre'];
         $parents2 = $parents->pluck('name', 'id')->toArray();
@@ -169,8 +169,8 @@ class MenuController extends Controller
                 'name' => ['required', 'max:255', Rule::unique('menus')->ignore($id)],
                 'url' => 'required|max:255',
                 'parent' => 'required|max:255',
-                'enabled' => 'required|max:255',
                 'role' => 'required',
+                'enabled' => 'boolean',
                 'order' => 'required'
             ],
             [
@@ -188,12 +188,21 @@ class MenuController extends Controller
             Flash::error('Menú no encontrado');
             return redirect()->route('menus.index');
         }
-        $menu = $this->menuRepository->update($request->all(), $id);
+        $data = [
+            'name' => $request->name,
+            'description' => $request->description,
+            'url' => $request->url,
+            'parent' => $request->parent,
+            'enabled' => $request->has('enabled') ? true : false,
+            'icono' => $request->icono,
+            'order' => $request->order,
+        ];
+        $menu = $this->menuRepository->update($data, $id);
         $role = new Menu();
         $roles1 = $request['role'];
         $roles = $menu->roles()->sync($request['role']);
 
-         Flash::success('Menú actualizado correctamente.');
+        Flash::success('Menú actualizado correctamente.');
         return redirect()->route('menus.index')
             ->with('titulo', $this->titulo);
     }
@@ -216,7 +225,7 @@ class MenuController extends Controller
         return redirect()->route('menus.index')->with('titulo', $this->titulo);
     }
 
-    public function indexMenuDeleted():View
+    public function indexMenuDeleted(): View
     {
         $menus = Menu::onlyTrashed()->get();
         return view('publico.menus.menu_delete')
@@ -224,7 +233,7 @@ class MenuController extends Controller
             ->with('titulo', $this->titulo);
     }
 
-    public function restoreMenuDeleted($id):RedirectResponse
+    public function restoreMenuDeleted($id): RedirectResponse
     {
         $user_deleted = Menu::where('id', $id);
         $user_deleted->restore();

@@ -15,26 +15,20 @@
                 <td>{{ $tipoActividad->id }}</td>
                 <td>{{ $tipoActividad->nombre }}</td>
                 <td>
-                    @can('consultar-tipoactividad')
-                        <a class="btn btn-sm btn-success" href="{{ route('tipoActividades.show', [$tipoActividad->id]) }}">
-                            <i class="fa fa-search"></i>
-                        </a>
-                    @endcan
-                    @can('editar-tipoactividad')
-                        <a class="btn btn-sm btn-info" href="{{ route('tipoActividades.edit', [$tipoActividad->id]) }}">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                    @endcan
-                    @can('eliminar-tipoactividad')
-                        <div class='btn-group'>
-                            {!! Form::open(['route' => ['tipoActividades.destroy', $tipoActividad->id], 'method' => 'delete', 'class' => 'delete-form']) !!}
-                            <button type="submit" class="btn btn-sm btn-danger" id="eliminar"
-                                data-mensaje="el tipo de actividad {{ $tipoActividad->nombre }}">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            {!! Form::close() !!}
-                        </div>
-                    @endcan
+                    <a class="btn btn-sm btn-success" href="{{ route('tipoActividades.show', [$tipoActividad->id]) }}">
+                        <i class="fa fa-search"></i>
+                    </a>
+                    <a class="btn btn-sm btn-info" href="{{ route('tipoActividades.edit', [$tipoActividad->id]) }}">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <div class='btn-group'>
+                        {{ html()->form('DELETE')->route('tipoActividades.destroy', [$tipoActividad->id])->class('delete-form')->open() }}
+                        <button type="submit" class="btn btn-sm btn-danger" id="eliminar"
+                            data-mensaje="el tipo de actividad {{ $tipoActividad->nombre }}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        {{ html()->form()->close() }}
+                    </div>
                 </td>
             </tr>
         @endforeach

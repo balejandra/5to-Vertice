@@ -80,12 +80,12 @@
                                                 @endcan
                                                 @can('eliminar-rol')
                                                     <div class='btn-group'>
-                                                        {!! Form::open(['route' => ['roles.destroy', $role->id], 'method' => 'delete', 'class' => 'delete-form']) !!}
+                                                        {{ html()->form('DELETE')->route('roles.destroy', [$role->id])->class('delete-form')->open() }}
 
                                                         <button type="submit" class="btn btn-sm btn-danger" id="eliminar"
                                                             data-mensaje="el rol {{ $role->name }}">
                                                             <i class="fa fa-trash"></i></button>
-                                                        {!! Form::close() !!}
+                                                        {{ html()->form()->close() }}
                                                     </div>
                                                 @endcan
                                             </td>

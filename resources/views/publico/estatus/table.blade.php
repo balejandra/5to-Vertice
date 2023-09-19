@@ -27,12 +27,11 @@
                     @endcan
                     @can('eliminar-estatus')
                         <div class='btn-group'>
-                            {!! Form::open(['route' => ['estatus.destroy', $status->id], 'method' => 'delete', 'class' => 'delete-form']) !!}
-
+                            {{ html()->form('DELETE')->route('estatus.destroy', [$status->id])->class('delete-form')->open() }}
                             <button type="submit" class="btn btn-sm btn-danger" id="eliminar"
                                 data-mensaje="el estatus {{ $status->nombre }}">
                                 <i class="fa fa-trash"></i></button>
-                            {!! Form::close() !!}
+                            {{ html()->form()->close() }}
                         </div>
                     @endcan
                 </td>
