@@ -110,3 +110,4 @@ $('.confirmation_other').on('click', function (event) {
         }
     });
 })
+

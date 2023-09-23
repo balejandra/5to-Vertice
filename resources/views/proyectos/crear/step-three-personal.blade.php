@@ -19,7 +19,8 @@
                         <div class="card-body" style="min-height: 350px;">
                             @include('proyectos.crear.stepsIndicator')
 
-                            <form method="POST" action="{{ route('proyectos.postStep3.personal') }}" style="min-height:200px">
+                            <form class="was-validated" method="POST" action="{{ route('proyectos.postStep3.personal') }}"
+                                style="min-height:200px">
                                 @csrf
 
                                 @if ($errors->any())
@@ -36,14 +37,21 @@
                                         <div class="form-group">
                                             <label for="title">Jefe de Proyecto:</label>
                                             <input type="text" class="form-control" placeholder="Nombres y Apellidos"
-                                                name="jefe_proyecto" value="{{ $proyecto->jefe_proyecto ?? '' }}">
+                                                name="jefe_proyecto" value="{{ $proyecto->jefe_proyecto ?? '' }}" required>
+                                            <div class="invalid-feedback">
+                                                Jefe de Proyecto Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="title">Persona Contacto:</label>
                                             <input type="text" class="form-control" placeholder="Persona Contacto"
-                                                name="persona_contacto" value="{{ $proyecto->persona_contacto ?? '' }}">
+                                                name="persona_contacto" value="{{ $proyecto->persona_contacto ?? '' }}"
+                                                required>
+                                            <div class="invalid-feedback">
+                                                Persona Contacto Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

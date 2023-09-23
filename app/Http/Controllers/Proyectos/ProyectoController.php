@@ -4,15 +4,19 @@ namespace App\Http\Controllers\Proyectos;
 
 use App\Http\Controllers\Controller;
 use App\Models\Proyectos\Proyecto;
+use App\Models\Publico\Institucion;
 use App\Models\Taxonomia\CadenciaInvestigativa;
 use App\Models\Taxonomia\FinInvestigacion;
 use App\Models\Taxonomia\Funcion;
+use App\Models\Taxonomia\LineaInvestigacion;
 use App\Models\Taxonomia\Origen;
 use App\Models\Taxonomia\Participacion;
 use App\Models\Taxonomia\TipoActividad;
 use App\Models\Taxonomia\TipoDesarrollo;
 use App\Models\Taxonomia\TipoInvestigacion;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Laracasts\Flash\Flash;
 
 class ProyectoController extends Controller
 {
@@ -31,7 +35,10 @@ class ProyectoController extends Controller
         $request->session()->forget('proyecto');
 
         $userAuth = auth()->id();
-        if (auth()->user()->hasPermissionTo('listar-proyectos-origen-autor')) {
+        if (auth()->user()->hasPermissionTo('listar-proyectos-todos')) {
+            $proyectos = Proyecto::all();
+            return view('proyectos.info.index')->with('proyectos', $proyectos);
+        } elseif (auth()->user()->hasPermissionTo('listar-proyectos-origen-autor')) {
             $proyectos = Proyecto::where('user_id', $userAuth)->get();
             return view('proyectos.info.index')->with('proyectos', $proyectos);
         }
@@ -48,11 +55,19 @@ class ProyectoController extends Controller
     public function postCreateStep1Datos(Request $request)
     {
 
-        $validatedData = $request->validate([
-            'nombre_proyecto' => 'required',
-            'tiempo_ejecucion' => 'required',
-            'ano_ejecucion' => 'required',
-        ]);
+        $validatedData = $request->validate(
+            [
+                'nombre_proyecto' => 'required',
+                'tiempo_ejecucion' => 'required',
+                'ano_ejecucion' => 'required',
+            ],
+            [
+                'nombre_proyecto.required' => 'El campo Nombre es obligatorio',
+                'tiempo_ejecucion.required' => 'El campo Tiempo de Ejecución es obligatorio',
+                'ano_ejecucion.required' => 'El campo Año de Ejecución es obligatorio',
+
+            ]
+        );
 
         if (empty($request->session()->get('proyecto'))) {
             $proyecto = new Proyecto();
@@ -78,10 +93,15 @@ class ProyectoController extends Controller
 
     public function postCreateStep2Contenido(Request $request)
     {
-        $validatedData = $request->validate([
-            'metas_ano_actual' => 'required',
-            'informacion_interes' => 'nullable',
-        ]);
+        $validatedData = $request->validate(
+            [
+                'metas_ano_actual' => 'required',
+                'informacion_interes' => 'nullable',
+            ],
+            [
+                'metas_ano_actual.required' => 'El campo Metas es obligatorio',
+            ]
+        );
 
         $proyecto = $request->session()->get('proyecto');
         $proyecto->fill($validatedData);
@@ -101,10 +121,16 @@ class ProyectoController extends Controller
 
     public function postCreateStep3Personal(Request $request)
     {
-        $validatedData = $request->validate([
-            'jefe_proyecto' => 'required|string',
-            'persona_contacto' => 'required|string',
-        ]);
+        $validatedData = $request->validate(
+            [
+                'jefe_proyecto' => 'required|string',
+                'persona_contacto' => 'required|string',
+            ],
+            [
+                'jefe_proyecto.required' => 'El campo Jefe de Proyecto es obligatorio',
+                'persona_contacto.required' => 'El campo Persona Contacto es obligatorio',
+            ]
+        );
 
         $proyecto = $request->session()->get('proyecto');
         $proyecto->fill($validatedData);
@@ -126,6 +152,7 @@ class ProyectoController extends Controller
             $tiposDesarrollo = TipoDesarrollo::pluck('nombre', 'id');
             $finesInvestigacion = FinInvestigacion::pluck('nombre', 'id');
             $tiposActividad = TipoActividad::pluck('nombre', 'id');
+            $lineasInvestigacion = LineaInvestigacion::pluck('nombre', 'id');
 
             return view('proyectos.crear.step-four-taxonomia', [
                 'step' => $this->step = 4,
@@ -138,6 +165,7 @@ class ProyectoController extends Controller
                 'tiposDesarrollo' => $tiposDesarrollo,
                 'finesInvestigacion' => $finesInvestigacion,
                 'tiposActividad' => $tiposActividad,
+                'lineasInvestigacion' => $lineasInvestigacion
             ]);
         } else {
             return redirect(route('proyectos.step1'));
@@ -146,31 +174,124 @@ class ProyectoController extends Controller
 
     public function postCreateStep4Taxonomia(Request $request)
     {
-        $validatedData = $request->validate([
-            'origen' => 'required|string',
-            'funciones' => 'required|string',
-            'tipoInvestigaciones' => 'required|string',
-            'participaciones' => 'required|string',
-            'cadenciasInvestigativas' => 'required|string',
-            'tiposDesarrollo' => 'required|string',
-            'finesInvestigacion' => 'required|string',
-            'tiposActividad' => 'required|string',
-        ]);
+        $validatedData = $request->validate(
+            [
+                'origen_id' => 'required|integer',
+                'funcion_id' => 'required|integer',
+                'tipo_investigacion_id' => 'required|integer',
+                'participacion_id' => 'required|integer',
+                'cadencia_investigativa_id' => 'required|integer',
+                'tipo_desarrollo_id' => 'required|integer',
+                'fin_investigacion_id' => 'required|integer',
+                'tipo_actividad_id' => 'required|integer',
+                'linea_investigacion_id' => 'required|integer',
+            ],
+            [
+                'origen_id.required' => 'El campo Origen es obligatorio',
+                'funcion_id.required' => 'El campo Función es obligatorio',
+                'tipo_investigacion_id.required' => 'El campo Tipo de Investigación es obligatorio',
+                'participacion_id.required' => 'El campo Participación es obligatorio',
+                'cadencia_investigativa_id.required' => 'El campo Cadencia de Investigación es obligatorio',
+                'tipo_desarrollo_id.required' => 'El campo Tipo de Desarrollo es obligatorio',
+                'fin_investigacion_id.required' => 'El campo Fin de Investigación es obligatorio',
+                'tipo_actividad_id.required' => 'El campo Tipo de Actividad es obligatorio',
+                'linea_investigacion_id.required' => 'El campo Línea de Investigación es obligatorio',
+            ]
+        );
 
         $proyecto = $request->session()->get('proyecto');
         $proyecto->fill($validatedData);
         $request->session()->put('proyecto', $proyecto);
 
-        return redirect(route('proyectos.step4'));
+        return redirect(route('proyectos.step5'));
     }
 
+    public function createStep5Financiero(Request $request)
+    {
+        $proyecto = $request->session()->get('proyecto');
+        return session()->has('proyecto') && !empty($proyecto->nombre_proyecto)
+            ? view('proyectos.crear.step-five-financiero', ['step' => $this->step = 5, 'proyecto' => $proyecto])
+            : redirect(route('proyectos.step1'));
+    }
+
+    public function postCreateStep5Financiero(Request $request)
+    {
+        $validatedData = $request->validate(
+            [
+                'porcentaje_ejecucion_fisica' => 'nullable|numeric|between:0,100',
+                'costo_total_proyecto' => 'required|numeric|min:0',
+                'costo_transnacional' => 'nullable|numeric|min:0',
+                'ahorro_nacion' => 'nullable|numeric|min:0',
+            ],
+            [
+                'porcentaje_ejecucion_fisica.numeric' => 'El campo Porcentaje de Ejecución Física debe ser un número',
+                'porcentaje_ejecucion_fisica.between' => 'El campo Porcentaje de Ejecución Física debe estar entre 0 y 100',
+                'costo_total_proyecto.required' => 'El campo Costo Total Proyecto es obligatorio',
+                'costo_transnacional.numeric' => 'El campo Costo Transnacional debe ser un número',
+                'ahorro_nacion.numeric' => 'El campo Ahorro Nacional debe ser un número',
+            ]
+        );
+
+        $proyecto = $request->session()->get('proyecto');
+        $proyecto->fill($validatedData);
+        $request->session()->put('proyecto', $proyecto);
+
+        return redirect(route('proyectos.step6'));
+    }
+
+    public function createStep6Soluciones(Request $request)
+    {
+        $proyecto = $request->session()->get('proyecto');
+        return session()->has('proyecto') && !empty($proyecto->nombre_proyecto)
+            ? view('proyectos.crear.step-six-soluciones', ['step' => $this->step = 6, 'proyecto' => $proyecto])
+            : redirect(route('proyectos.step1'));
+    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        // Obtener los datos de la sesión
+        $datosProyecto = $request->session()->get('proyecto');
+
+        $validatedData = $request->validate([
+            'victoria_temprana' => 'nullable|string',
+            'nudo_critico' => 'nullable|string',
+        ]);
+        $datosProyecto->fill($validatedData);
+        $request->session()->put('proyecto', $datosProyecto);
+
+        $porcentajeEjecucionFisica = $this->calcularPorcentajeEjecucion($datosProyecto['porcentaje_ejecucion_fisica'], 'calcular');
+
+        $institucionId = auth()->user()->institucion_id; // Obtener la institución del usuario logueado
+        $nroPlanilla = $this->generarNroPlanilla($institucionId); // Generar el correlativo
+        $estatusId = 3; // ID de estatus pendiente
+        $userId = auth()->id(); // Obtener el ID del usuario logueado
+
+        // Combinar todos los datos en un arreglo
+        $datosProyecto['institucion_id'] = $institucionId;
+        $datosProyecto['nro_planilla'] = $nroPlanilla;
+        $datosProyecto['estatus_id'] = $estatusId;
+        $datosProyecto['user_id'] = $userId;
+        $datosProyecto['porcentaje_ejecucion_fisica'] = $porcentajeEjecucionFisica;
+        // dd($datosProyecto);
+
+        $proyecto_save = $datosProyecto->save();
+        //dd($datosProyecto);
+        $mensajeUser = "El Sistema de Gestión de Proyectos 5to Vertice le notifica que ha generado una nueva solicitud de permiso de zarpe con su usuario y se encuentra en espera de aprobación.";
+        $view = 'emails.proyectos.planilla';
+        $titulo = 'Nueva Planilla de Proyectos ' . $datosProyecto->nro_planilla;
+        $email = $this->SendMail($datosProyecto->user_id, $datosProyecto, $titulo, $mensajeUser, $view);
+        if ($email == true) {
+            Flash::success('Se ha generado la planilla <b>' . $nroPlanilla . '</b> exitosamente y se han enviado los correos de notificación correspondientes');
+        } else {
+            Flash::success('Se ha generado la planilla <b>' . $nroPlanilla . '</b> exitosamente');
+
+        }
+        // Limpiar la variable de sesión después de guardar
+        $request->session()->forget('proyecto');
+        return redirect()->route('proyectos.index');
     }
 
     /**
@@ -204,4 +325,72 @@ class ProyectoController extends Controller
     {
         //
     }
+
+    public function generarNroPlanilla($institucionId)
+    {
+        // Obtener el año y el mes actual
+        $yearActual = date('Y');
+        $mesActual = date('m');
+        $sigla = Institucion::select('sigla')->where('id', '=', $institucionId)->get();
+
+        // Generar el número de correlativo basado en la institución y el año actual
+        $correlativo = $sigla[0]->sigla . '-' . $yearActual . $mesActual;
+
+        // Obtener la cantidad de proyectos existentes para esta institución en el mismo año
+        $proyectosExisten = Proyecto::where('institucion_id', $institucionId)
+            ->whereYear('created_at', '=', $yearActual)
+            ->count();
+
+        // Incrementar el correlativo en función de cuántos proyectos existen
+        $correlativo .= '-' . ($proyectosExisten + 1);
+
+        return $correlativo;
+    }
+
+    public function calcularPorcentajeEjecucion($porcentaje, $accion)
+    {
+        switch ($accion) {
+            case 'calcular':
+                return $porcentaje / 100;
+            case 'mostrar':
+                return $porcentaje * 100;
+            default:
+                throw new \InvalidArgumentException('Acción no válida: ' . $accion);
+        }
+    }
+
+    public function SendMail($userIdTo, $proyecto, $tituloMail, $contenidoMail, $vistaMail)
+    {
+        $email = new MailProyectosController();
+        $userMail = User::find($userIdTo);
+        $dataMail = [
+            'nro' => $proyecto->nro_planilla,
+            'nombre' => $proyecto->nombre_proyecto,
+            'institucion' => $userMail->institucion->nombre,
+            'jefe_proyecto' => $proyecto->jefe_proyecto,
+            'costo_total' => $proyecto->costo_total_proyecto,
+            'mensaje' => $contenidoMail,
+        ];
+
+        $mail = $email->mailProyecto($userMail->email, $tituloMail, $dataMail, $vistaMail);
+
+        if ($mail) {
+            $notification = new NotificacionesController();
+            $dataNotification = [
+                'user_id' => $userIdTo,
+                'titulo' => $tituloMail,
+                'contenido' => $contenidoMail,
+                'tipo' => 'Proyectos',
+                'visto' => false,
+            ];
+            $resp = $notification->store($dataNotification);
+            return true;
+        } else {
+            return false;
+        }
+
+
+
+    }
+
 }

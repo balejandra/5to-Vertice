@@ -19,7 +19,8 @@
                         <div class="card-body" style="min-height: 350px;">
                             @include('proyectos.crear.stepsIndicator')
 
-                            <form method="POST" action="{{ route('proyectos.postStep1.datos') }}" style="min-height:200px">
+                            <form class="was-validated" method="POST" action="{{ route('proyectos.postStep1.datos') }}"
+                                style="min-height:200px">
                                 @csrf
 
                                 @if ($errors->any())
@@ -35,22 +36,32 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="title">Nombre:</label>
-                                            <input type="text" class="form-control" placeholder="Nombre"
+                                            <input type="text" class="form-control" placeholder="Nombre" required
                                                 name="nombre_proyecto" value="{{ $proyecto->nombre_proyecto ?? '' }}">
+                                            <div class="invalid-feedback">
+                                                Nombre Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="title">Tiempo de Ejecución:</label>
                                             <input type="text" class="form-control" placeholder="Tiempo de Ejecución"
-                                                name="tiempo_ejecucion" value="{{ $proyecto->tiempo_ejecucion ?? '' }}">
+                                                required name="tiempo_ejecucion"
+                                                value="{{ $proyecto->tiempo_ejecucion ?? '' }}">
+                                            <div class="invalid-feedback">
+                                                Tiempo de Ejecución Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="title">Año de Ejecución:</label>
                                             <input type="text" class="form-control" placeholder="Año de Ejecución"
-                                                name="ano_ejecucion" value="{{ $proyecto->ano_ejecucion ?? '' }}">
+                                                name="ano_ejecucion" value="{{ $proyecto->ano_ejecucion ?? '' }}" required>
+                                                <div class="invalid-feedback">
+                                                Año de Ejecución Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

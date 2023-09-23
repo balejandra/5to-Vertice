@@ -19,7 +19,8 @@
                         <div class="card-body" style="min-height: 350px;">
                             @include('proyectos.crear.stepsIndicator')
 
-                            <form method="POST" action="{{ route('proyectos.postStep1.datos') }}" style="min-height:200px">
+                            <form class="was-validated" method="POST" action="{{ route('proyectos.postStep4.taxonomia') }}"
+                                style="min-height:200px">
                                 @csrf
 
                                 @if ($errors->any())
@@ -35,49 +36,82 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="title">Origen:</label>
-                                            {{ html()->select('origen_id')->options($origen)->class('form-select')->placeholder('Seleccione un opción') }}
+                                            {{ html()->select('origen_id')->options($origen)->value($proyecto->origen_id ?? '')->class('form-select')->placeholder('Seleccione un opción')->required() }}
+                                            <div class="invalid-feedback">
+                                                Origen Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="title">Función:</label>
-                                            {{ html()->select('funcion_id')->options($funciones)->class('form-select')->placeholder('Seleccione un opción') }}
+                                            {{ html()->select('funcion_id')->options($funciones)->value($proyecto->funcion_id ?? '')->class('form-select')->placeholder('Seleccione un opción')->required() }}
+                                            <div class="invalid-feedback">
+                                                Función Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="title">Tipo de Investigación:</label>
-                                            {{ html()->select('tipo_investigacion_id')->options($tipoInvestigaciones)->class('form-select')->placeholder('Seleccione un opción') }}
+                                            {{ html()->select('tipo_investigacion_id')->options($tipoInvestigaciones)->value($proyecto->tipo_investigacion_id ?? '')->class('form-select')->placeholder('Seleccione un opción')->required() }}
+                                            <div class="invalid-feedback">
+                                                Tipo de Investigación Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="title">Participación:</label>
-                                            {{ html()->select('participacion_id')->options($participaciones)->class('form-select')->placeholder('Seleccione un opción') }}
+                                            {{ html()->select('participacion_id')->options($participaciones)->value($proyecto->participacion_id ?? '')->class('form-select')->placeholder('Seleccione un opción')->required() }}
+                                            <div class="invalid-feedback">
+                                                Participación Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="title">Cadencia Investigativa:</label>
-                                            {{ html()->select('cadencia_investigativa_id')->options($cadenciasInvestigativas)->class('form-select')->placeholder('Seleccione un opción') }}
+                                            {{ html()->select('cadencia_investigativa_id')->options($cadenciasInvestigativas)->value($proyecto->cadencia_investigativa_id ?? '')->class('form-select')->placeholder('Seleccione un opción')->required() }}
+                                            <div class="invalid-feedback">
+                                                Cadencia Investigativa Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="title">Tipo de Desarrollo:</label>
-                                            {{ html()->select('tipo_desarrollo_id')->options($tiposDesarrollo)->class('form-select')->placeholder('Seleccione un opción') }}
+                                            {{ html()->select('tipo_desarrollo_id')->options($tiposDesarrollo)->value($proyecto->tipo_desarrollo_id ?? '')->class('form-select')->placeholder('Seleccione un opción')->required() }}
+                                            <div class="invalid-feedback">
+                                                Tipo de Desarrollo Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="title">Fin de la Investigación:</label>
-                                            {{ html()->select('fin_investigacion_id')->options($finesInvestigacion)->class('form-select')->placeholder('Seleccione un opción') }}
+                                            {{ html()->select('fin_investigacion_id')->options($finesInvestigacion)->value($proyecto->fin_investigacion_id ?? '')->class('form-select')->placeholder('Seleccione un opción')->required() }}
+                                            <div class="invalid-feedback">
+                                                Fin de la Investigación Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="title">Tipo de Actividad:</label>
-                                            {{ html()->select('tipo_actividad_id')->options($tiposActividad)->class('form-select')->placeholder('Seleccione un opción') }}
+                                            {{ html()->select('tipo_actividad_id')->options($tiposActividad)->value($proyecto->tipo_actividad_id ?? '')->class('form-select')->placeholder('Seleccione un opción')->required() }}
+                                            <div class="invalid-feedback">
+                                                Tipo de Actividad Requerido.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="title">Línea de Investigación:</label>
+                                            {{ html()->select('linea_investigacion_id')->options($lineasInvestigacion)->value($proyecto->linea_investigacion_id ?? '')->class('form-select')->placeholder('Seleccione un opción')->required() }}
+                                            <div class="invalid-feedback">
+                                                Línea de Investigación Requerido.
+                                            </div>
                                         </div>
                                     </div>
                                     <br>

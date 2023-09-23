@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Proyectos\NotificacionesController;
 use App\Http\Controllers\Proyectos\ProyectoController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/proyectos/create-four-taxonomia', [ProyectoController::class, 'createStep4Taxonomia'])->name('proyectos.step4');
     Route::post('/proyectos/create-four-taxonomia', [ProyectoController::class, 'postCreateStep4Taxonomia'])->name('proyectos.postStep4.taxonomia');
     /*PASO 5*/
-    //Route::get('/proyectos/create-five-financiero', [ProyectoController::class, 'createStep5Financiero'])->name('proyectos.step5');
-   // Route::post('/proyectos/create-four-taxonomia', [ProyectoController::class, 'postCreateStep4Taxonomia'])->name('proyectos.postStep4.taxonomia');
+    Route::get('/proyectos/create-five-financiero', [ProyectoController::class, 'createStep5Financiero'])->name('proyectos.step5');
+    Route::post('/proyectos/create-five-financiero', [ProyectoController::class, 'postCreateStep5Financiero'])->name('proyectos.postStep5.financiero');
+    /*PASO 6*/
+    Route::get('/proyectos/create-six-soluciones', [ProyectoController::class, 'createStep6Soluciones'])->name('proyectos.step6');
+
+    Route::post('/proyectos/create-six-soluciones', [ProyectoController::class, 'store'])->name('proyectos.store');
+
+    Route::get('/proyectos/show', [ProyectoController::class, 'show'])->name('proyectos.show');
+
+    /*NOTIFICACIONES*/
+    Route::get('notificaciones/index', [NotificacionesController::class, 'index'])->name('notificaciones.index');
+    Route::get('notificaciones/{notificacion}', [NotificacionesController::class, 'show'])->name('notificaciones.show');
+
+
 });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Proyectos\Notificacion;
 use App\Models\Proyectos\Proyecto;
 use App\Models\Publico\Estatus;
 use App\Models\Publico\Institucion;
@@ -485,4 +486,27 @@ Breadcrumbs::for('proyectos.step3', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('proyectos.step4', function (BreadcrumbTrail $trail) {
     $trail->parent('proyectos.index');
     $trail->push('Paso 4 - Taxonomía', route('proyectos.step4'));
+});
+
+Breadcrumbs::for('proyectos.step5', function (BreadcrumbTrail $trail) {
+    $trail->parent('proyectos.index');
+    $trail->push('Paso 5 - Financiero', route('proyectos.step5'));
+});
+
+Breadcrumbs::for('proyectos.step6', function (BreadcrumbTrail $trail) {
+    $trail->parent('proyectos.index');
+    $trail->push('Paso 6 - Soluciones y Desafios', route('proyectos.step6'));
+});
+
+//NOTIFICACIONES
+// Migas de pan para la ruta 'notificaciones.index'
+Breadcrumbs::for('notificaciones.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard'); // Reemplaza 'dashboard' por la ruta adecuada si es necesario.
+    $trail->push('Notificaciones', route('notificaciones.index'));
+});
+
+// Migas de pan para la ruta 'notificaciones.show'
+Breadcrumbs::for('notificaciones.show', function (BreadcrumbTrail $trail, Notificacion $notificacion) {
+    $trail->parent('notificaciones.index');
+    $trail->push($notificacion->nombre, route('notificaciones.show', $notificacion->id));
 });

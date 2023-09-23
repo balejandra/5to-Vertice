@@ -19,8 +19,7 @@
                         <div class="card-body" style="min-height: 350px;">
                             @include('proyectos.crear.stepsIndicator')
 
-                            <form class="was-validated" method="POST" action="{{ route('proyectos.postStep2.contenido') }}"
-                                style="min-height:200px">
+                            <form class="was-validated" method="POST" action="{{ route('proyectos.store') }}" style="min-height:200px">
                                 @csrf
 
                                 @if ($errors->any())
@@ -36,17 +35,17 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="title">Metas:</label>
-                                            <textarea class="form-control" required name="metas_ano_actual" rows="5" placeholder="Metas Año Actual">{{ $proyecto->metas_ano_actual ?? '' }}</textarea>
-                                            <div class="invalid-feedback">
-                                                Metas Requerido.
+                                            <label for="title">Victoria Temprana:</label>
+                                            <textarea class="form-control" name="victoria_temprana" rows="5" placeholder="Victoria Temprana">{{ $proyecto->victoria_temprana ?? '' }}</textarea>
+                                            <div class="valid-feedback">
+                                                No obligatorio.
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="title">Información de Interés:</label>
-                                            <textarea class="form-control" name="informacion_interes" rows="5" placeholder="Información de Interés">{{ $proyecto->informacion_interes ?? '' }}</textarea>
+                                            <label for="title">Nudo Crítico:</label>
+                                            <textarea class="form-control" name="nudo_critico" rows="5" placeholder="Nudo Crítico">{{ $proyecto->nudo_critico ?? '' }}</textarea>
                                             <div class="valid-feedback">
                                                 No obligatorio.
                                             </div>
