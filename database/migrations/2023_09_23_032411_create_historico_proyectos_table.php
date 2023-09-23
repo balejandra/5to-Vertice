@@ -11,9 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('historico_proyectos', function (Blueprint $table) {
+        Schema::connection('pgsql_proyectos_schema')->create('historico_proyectos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('public.users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->unsignedBigInteger('proyecto_id');
+            $table->foreign('proyecto_id')->references('id')->on('proyectos')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->string('accion');
+            $table->string('motivo');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -22,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('historico_proyectos');
+        Schema::connection('pgsql_proyectos_schema')->dropIfExists('historico_proyectos');
     }
 };
