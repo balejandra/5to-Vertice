@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Proyectos;
 
 use App\Http\Controllers\Controller;
+use App\Models\Proyectos\HistoricoProyecto;
 use App\Models\Proyectos\Proyecto;
 use App\Models\Publico\Institucion;
 use App\Models\Taxonomia\CadenciaInvestigativa;
@@ -34,12 +35,18 @@ class ProyectoController extends Controller
     {
         $request->session()->forget('proyecto');
 
-        $userAuth = auth()->id();
+        $userAuth = auth()->user();
+        //dd($userAuth);
+
         if (auth()->user()->hasPermissionTo('listar-proyectos-todos')) {
             $proyectos = Proyecto::all();
             return view('proyectos.info.index')->with('proyectos', $proyectos);
         } elseif (auth()->user()->hasPermissionTo('listar-proyectos-origen-autor')) {
-            $proyectos = Proyecto::where('user_id', $userAuth)->get();
+            $proyectos = Proyecto::where('user_id', $userAuth->id)->get();
+            return view('proyectos.info.index')->with('proyectos', $proyectos);
+        } elseif (auth()->user()->hasPermissionTo('listar-proyectos-origen-revisor')) {
+            $proyectos = Proyecto::where('institucion_id', $userAuth->institucion_id)->get();
+            // dd($proyectos);
             return view('proyectos.info.index')->with('proyectos', $proyectos);
         }
     }
@@ -278,28 +285,55 @@ class ProyectoController extends Controller
         // dd($datosProyecto);
 
         $proyecto_save = $datosProyecto->save();
-        //dd($datosProyecto);
-        $mensajeUser = "El Sistema de Gestión de Proyectos 5to Vertice le notifica que ha generado una nueva solicitud de permiso de zarpe con su usuario y se encuentra en espera de aprobación.";
-        $view = 'emails.proyectos.planilla';
-        $titulo = 'Nueva Planilla de Proyectos ' . $datosProyecto->nro_planilla;
-        $email = $this->SendMail($datosProyecto->user_id, $datosProyecto, $titulo, $mensajeUser, $view);
-        if ($email == true) {
-            Flash::success('Se ha generado la planilla <b>' . $nroPlanilla . '</b> exitosamente y se han enviado los correos de notificación correspondientes');
+        if ($proyecto_save) {
+            $historic = HistoricoProyecto::create([
+                'user_id' => $datosProyecto['user_id'],
+                'proyecto_id' => $datosProyecto['id'],
+                'accion' => 'Proyecto creado',
+                'motivo' => 'Creación'
+            ]);
+            // dd($historic);
+            $mensajeUser = "El Sistema de Gestión de Proyectos 5to Vertice le notifica que ha generado una nueva solicitud de permiso de zarpe con su usuario y se encuentra en espera de aprobación.";
+            $view = 'emails.proyectos.planilla';
+            $titulo = 'Nueva Planilla de Proyectos ' . $datosProyecto->nro_planilla;
+            $email = $this->SendMail($datosProyecto->user_id, $datosProyecto, $titulo, $mensajeUser, $view);
+            if ($email == true) {
+                Flash::success('Se ha generado la planilla <b>' . $nroPlanilla . '</b> exitosamente y se han enviado los correos de notificación correspondientes');
+                $request->session()->forget('proyecto');
+                return redirect()->route('proyectos.index');
+            } else {
+                Flash::success('Se ha generado la planilla <b>' . $nroPlanilla . '</b> exitosamente');
+                $request->session()->forget('proyecto');
+                return redirect()->route('proyectos.index');
+            }
         } else {
-            Flash::success('Se ha generado la planilla <b>' . $nroPlanilla . '</b> exitosamente');
-
+            Flash::success('Ha ocurrido un error al guardar la planilla, inténtelo de nuevo');
+            $request->session()->forget('proyecto');
+            return redirect()->route('proyectos.index');
         }
+        //dd($datosProyecto);
+
         // Limpiar la variable de sesión después de guardar
-        $request->session()->forget('proyecto');
-        return redirect()->route('proyectos.index');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Proyecto $proyecto)
     {
-        //
+        // dd($proyecto->id);
+        $proyectoFind = Proyecto::find($proyecto->id);
+        $revisiones = HistoricoProyecto::where('proyecto_id', $proyecto->id)->get();
+        if (empty($proyectoFind)) {
+            Flash::error('Proyecto no encontrado');
+
+            return redirect(route('proyectos.index'));
+        }
+
+        return view('proyectos.info.show')
+            ->with('proyecto', $proyectoFind)
+            ->with('revisiones', $revisiones);
     }
 
     /**

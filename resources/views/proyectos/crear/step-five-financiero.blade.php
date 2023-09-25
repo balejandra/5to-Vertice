@@ -47,7 +47,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="title">Coto Total del Proyecto:</label>
+                                            <label for="title">Costo Total del Proyecto:</label>
                                             <input type="number" class="form-control coin" placeholder="0.00"
                                                 onkeydown="return soloNumeros(event)" min="0.00" step="0.01"
                                                 name="costo_total_proyecto" required
@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="title">Costo del Proyecto Fuese ejecutado por
+                                            <label for="title">Costo del Proyecto si Fuese ejecutado por
                                                 Transnacional:</label>
                                             <input type="number" class="form-control coin" placeholder="0.00"
                                                 onkeydown="return soloNumeros(event)" id="1"

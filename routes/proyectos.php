@@ -40,11 +40,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/proyectos/create-five-financiero', [ProyectoController::class, 'postCreateStep5Financiero'])->name('proyectos.postStep5.financiero');
     /*PASO 6*/
     Route::get('/proyectos/create-six-soluciones', [ProyectoController::class, 'createStep6Soluciones'])->name('proyectos.step6');
-
     Route::post('/proyectos/create-six-soluciones', [ProyectoController::class, 'store'])->name('proyectos.store');
 
-    Route::get('/proyectos/show', [ProyectoController::class, 'show'])->name('proyectos.show');
+    /*SHOW PROYECTOS*/
+    Route::get('proyectos/{proyecto}', [ProyectoController::class, 'show'])->name('proyectos.show');
 
+    /*UPDATE ESTATUS PROYECTOS*/
+    Route::get('proyectos/update-estatus/{id}/{estatus}', [ProyectoController::class, 'updateStatus'])->name('proyectos.updateStatus');
+    
     /*NOTIFICACIONES*/
     Route::get('notificaciones/index', [NotificacionesController::class, 'index'])->name('notificaciones.index');
     Route::get('notificaciones/{notificacion}', [NotificacionesController::class, 'show'])->name('notificaciones.show');

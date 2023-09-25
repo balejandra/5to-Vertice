@@ -456,7 +456,7 @@ Breadcrumbs::for('proyectos.index', function (BreadcrumbTrail $trail) {
 // Migas de pan para la ruta 'proyectos.show'
 Breadcrumbs::for('proyectos.show', function (BreadcrumbTrail $trail, Proyecto $proyecto) {
     $trail->parent('proyectos.index');
-    $trail->push($proyecto->nombre, route('proyectos.show', $proyecto->id));
+    $trail->push($proyecto->nombre_proyecto, route('proyectos.show', $proyecto->id));
 });
 
 // Migas de pan para la ruta 'proyectos.edit'

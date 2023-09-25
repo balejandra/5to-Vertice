@@ -27,7 +27,21 @@
                             <i class="fa fa-search"></i>
                         </a>
                     @endcan
-
+                    @if ($proyecto->estatus->id == '6')
+                        @can('aprobar-proyecto')
+                            <a data-route="{{ route('status', [$permisoOrigenZarpe->id, 'aprobado', $permisoOrigenZarpe->establecimiento_nautico_id]) }}"
+                                class="btn btn-success btn-sm confirmation" title="Aprobar" data-action="APROBAR">
+                                <i class="fa fa-check"></i>
+                            </a>
+                        @endcan
+                        @can('rechazar-zarpe')
+                            <!-- Button trigger modal -->
+                            <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-rechazo"
+                                onclick="modalrechazarzarpe({{ $permisoOrigenZarpe->id }},'{{ $permisoOrigenZarpe->nro_solicitud }}')">
+                                <i class="fa fa-ban"></i>
+                            </a>
+                        @endcan
+                    @endif
                 </td>
             </tr>
         @endforeach

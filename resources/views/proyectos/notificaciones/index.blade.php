@@ -13,8 +13,8 @@
                     <div class="list-group" id="list-tab" role="tablist">
                         @foreach ($notificaciones as $notification)
                             <!--  LINK PARA ESCRITORIO  -->
-                            <a href="#"
-                                class="{{ $notification->visto != true ? 'notification-link-unread' : 'notification-link' }}  d-none d-lg-block"
+                            <a href="#" id="notification-link" onclick="showNotificacion({{ $notification->id }});"
+                                class="{{ $notification->visto != true ? 'unread' : '' }} notification-link d-none d-lg-block"
                                 data-notification-id="{{ $notification->id }}">
                                 <p class="notificacion-title mb-1 ">{{ $notification->titulo }}
                                     <span class="badge  text-bg-info">{{ $notification->tipo }}</span>
@@ -27,8 +27,9 @@
                                 </p>
                             </a>
                             <!--  LINK PARA DISPOSITIVOS MOVILES  -->
-                            <a href="#notificationOffcanvas"
-                                class="{{ $notification->visto != true ? 'notification-link-unread' : 'notification-link' }} d-lg-none"
+                            <a href="#notificationOffcanvas" id="notification-link"
+                                onclick="showNotificacion({{ $notification->id }});"
+                                class="{{ $notification->visto != true ? 'unread' : '' }} notification-link d-lg-none"
                                 data-bs-toggle="offcanvas" data-bs-target="#notificationOffcanvas"
                                 aria-controls="notificationOffcanvas" data-notification-id="{{ $notification->id }}">
                                 <p class="notificacion-title mb-1">{{ $notification->titulo }}
@@ -65,28 +66,27 @@
     </div>
     @push('scripts')
         <script>
-            $(document).ready(function() {
-                // Mostrar el contenido de la notificación en la columna de contenido (escritorio) o en el offcanvas (móvil)
-                $('.notification-link').click(function() {
-                    var notificationId = $(this).data('notification-id');
-                    $.ajax({
-                        url: route('notificaciones.show', [notificationId]),
-                        method: 'GET',
-                        success: function(response) {
-                            // Si estamos en dispositivos móviles, muestra el offcanvas
-                            if ($(window).width() <= 991) {
-                                $('#notificationContentBody').html(response);
-                            } else {
-                                // Si estamos en escritorio, actualiza la columna de contenido
-                                $('#notification-content').html(response);
-                            }
-                        },
-                        error: function(xhr) {
-                            console.log(xhr.responseText);
+            function showNotificacion(id) {
+                $.ajax({
+                    url: route('notificaciones.show', [id]),
+                    type: "GET",
+                    success: function(response) {
+
+                        // Si estamos en dispositivos móviles, muestra el offcanvas
+                        if ($(window).width() <= 991) {
+                            $('#notificationContentBody').html(response);
+                        } else {
+                            // Si estamos en escritorio, actualiza la columna de contenido
+                            $('#notification-content').html(response);
                         }
-                    });
+                        $('[data-notification-id="' + id + '"]').removeClass('unread');
+
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
                 });
-            });
+            }
         </script>
     @endpush
 @endsection

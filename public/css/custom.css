@@ -32,7 +32,7 @@ a.notification-link-unread {
 }
 
 .notificacion-title {
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
 .notification-content-header {
@@ -47,14 +47,8 @@ a.notification-link-unread {
     padding: 17.5px 35px;
     cursor: pointer;
 }
-
-.notification-link-unread {
-    -webkit-transition: background 0.15s;
-    -moz-transition: background 0.15s;
-    transition: background 0.15s;
-    padding: 17.5px 35px;
+.unread{
     font-weight: 700 !important;
-    cursor: pointer;
     background: #F7FAFF;
 }
 
