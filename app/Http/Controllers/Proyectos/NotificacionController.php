@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class NotificacionesController extends Controller
+class NotificacionController extends Controller
 {
     public function __construct()
     {

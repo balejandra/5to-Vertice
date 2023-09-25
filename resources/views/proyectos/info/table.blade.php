@@ -27,7 +27,7 @@
                             <i class="fa fa-search"></i>
                         </a>
                     @endcan
-                    @if ($proyecto->estatus->id == '6')
+                    @if ($proyecto->estatus->id == '1')
                         @can('aprobar-proyecto')
                             <a data-route="{{ route('status', [$permisoOrigenZarpe->id, 'aprobado', $permisoOrigenZarpe->establecimiento_nautico_id]) }}"
                                 class="btn btn-success btn-sm confirmation" title="Aprobar" data-action="APROBAR">

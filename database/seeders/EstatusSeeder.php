@@ -17,37 +17,42 @@ class EstatusSeeder extends Seeder
         DB::table('taxonomia.estatus')->insert([
             [
                 'id'=>1,
-                'nombre'=>'Aprobado',
+                'nombre'=>'Iniciado',
                 'created_at'=>now()
             ],
             [
                 'id'=>2,
-                'nombre'=>'Rechazado',
+                'nombre'=>'Revisado',
                 'created_at'=>now()
             ],
             [
                 'id'=>3,
-                'nombre'=>'Pendiente',
+                'nombre'=>'Aprobado',
                 'created_at'=>now()
             ],
             [
                 'id'=>4,
-                'nombre'=>'Cerrado',
+                'nombre'=>'Rechazado',
                 'created_at'=>now()
             ],
             [
                 'id'=>5,
-                'nombre'=>'Anulado',
+                'nombre'=>'Aprobado Final',
                 'created_at'=>now()
             ],
             [
                 'id'=>6,
-                'nombre'=>'Pendiente Aprobación',
+                'nombre'=>'Actualizado',
                 'created_at'=>now()
             ],
             [
                 'id'=>7,
-                'nombre'=>'Actualización',
+                'nombre'=>'Anulado',
+                'created_at'=>now()
+            ],
+            [
+                'id'=>8,
+                'nombre'=>'Cerrado',
                 'created_at'=>now()
             ],
         ]);
