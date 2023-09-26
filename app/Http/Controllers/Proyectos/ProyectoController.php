@@ -35,21 +35,29 @@ class ProyectoController extends Controller
     public function index(Request $request)
     {
         $request->session()->forget('proyecto');
-
         $userAuth = auth()->user();
-        //dd($userAuth);
 
+        /**ADMIN */
         if (auth()->user()->hasPermissionTo('listar-proyectos-todos')) {
             $proyectos = Proyecto::all();
             return view('proyectos.info.index')->with('proyectos', $proyectos);
         } elseif (auth()->user()->hasPermissionTo('listar-proyectos-origen-autor')) {
+            /**AUTOR */
             $proyectos = Proyecto::where('user_id', $userAuth->id)->get();
             return view('proyectos.info.index')->with('proyectos', $proyectos);
         } elseif (auth()->user()->hasPermissionTo('listar-proyectos-origen-revisor')) {
+            /**REVISOR ORIGEN*/
             $proyectos = Proyecto::where('institucion_id', $userAuth->institucion_id)->get();
             return view('proyectos.info.index')->with('proyectos', $proyectos);
         } elseif (auth()->user()->hasPermissionTo('listar-proyectos-origen-aprobador')) {
-            $proyectos = Proyecto::where('institucion_id', $userAuth->institucion_id)->where('estatus_id', '=', 2)->get();
+            /**APROBADOR ORIGEN */
+            $proyectos = Proyecto::where('institucion_id', $userAuth->institucion_id)
+                ->whereIn('estatus_id', [2, 4, 7])
+                ->get();
+            return view('proyectos.info.index')->with('proyectos', $proyectos);
+        } elseif (auth()->user()->hasPermissionTo('listar-proyectos-destino_aprobador')) {
+            /**APROBADOR DESTINO */
+            $proyectos = Proyecto::where('estatus_id', 4)->get();
             return view('proyectos.info.index')->with('proyectos', $proyectos);
         }
     }
@@ -285,7 +293,6 @@ class ProyectoController extends Controller
         $datosProyecto['estatus_id'] = $estatusId;
         $datosProyecto['user_id'] = $userId;
         $datosProyecto['porcentaje_ejecucion_fisica'] = $porcentajeEjecucionFisica;
-        // dd($datosProyecto);
 
         $proyecto_save = $datosProyecto->save();
         if ($proyecto_save) {
@@ -295,29 +302,19 @@ class ProyectoController extends Controller
                 'accion' => 'Proyecto creado',
                 'motivo' => 'Creación'
             ]);
-            // dd($historic);
             $mensajeUser = "El Sistema de Gestión de Proyectos 5to Vertice le notifica que ha generado una nueva solicitud de permiso de zarpe con su usuario y se encuentra en espera de aprobación.";
             $view = 'emails.proyectos.planilla';
             $titulo = 'Nueva Planilla de Proyectos ' . $datosProyecto->nro_planilla;
             $email = $this->SendMail($datosProyecto->user_id, $datosProyecto, $titulo, $mensajeUser, $view);
-            if ($email == true) {
-                Flash::success('Se ha generado la planilla <b>' . $nroPlanilla . '</b> exitosamente y se han enviado los correos de notificación correspondientes');
-                $request->session()->forget('proyecto');
-                return redirect()->route('proyectos.index');
-            } else {
-                Flash::success('Se ha generado la planilla <b>' . $nroPlanilla . '</b> exitosamente');
-                $request->session()->forget('proyecto');
-                return redirect()->route('proyectos.index');
-            }
+
+            Flash::success('Se ha generado la planilla <b>' . $nroPlanilla . '</b> exitosamente');
+            $request->session()->forget('proyecto');
+            return redirect()->route('proyectos.index');
         } else {
             Flash::success('Ha ocurrido un error al guardar la planilla, inténtelo de nuevo');
             $request->session()->forget('proyecto');
             return redirect()->route('proyectos.index');
         }
-        //dd($datosProyecto);
-
-        // Limpiar la variable de sesión después de guardar
-
     }
 
     /**
@@ -432,112 +429,53 @@ class ProyectoController extends Controller
     public function updateStatus($id, $estatus)
     {
         $proyecto = Proyecto::find($id);
-        $solicitante = User::find($proyecto->user_id);
-        $notificacion = new NotificacionController();
-        if ($estatus === 'revisar') {
-            $estatusRevisar = Estatus::find(2);
-            $proyecto->estatus_id = $estatusRevisar->id;
-            $proyecto->update();
 
-            HistoricoProyecto::create([
-                'user_id' => auth()->user()->id,
-                'proyecto_id' => $id,
-                'accion' => $estatusRevisar->nombre,
-                'motivo' => 'Revisado exitosamente'
-            ]);
-            $subject = 'Planilla de Proyecto ' . $proyecto->nro_solicitud . ' Revisada';
-            $mensaje = 'Estimado ciudadano, La planilla de proyecto N°:' . $proyecto->nro_planilla . ' registrada en el Sistema de Gestión de Proyectos 5to Vertice ha sido revisada exitosamente.';
-            $view = 'emails.proyectos.revision';
-            $email = $this->SendMail($proyecto->user_id, $proyecto, $subject, $mensaje, $view, $estatusRevisar->id);
-            if ($email == true) {
-                Flash::success('Solicitud revisada y correo enviado al usuario solicitante.');
-                return redirect()->route('proyectos.index');
-            } else {
-                Flash::success('Solicitud revisada');
-                return redirect()->route('proyectos.index');
-            }
-        } elseif ($estatus === 'devolver') {
-            $motivo = $_GET['motivo'];
-            $estatusRevisar = Estatus::find(4);
-            $proyecto->estatus_id = $estatusRevisar->id;
-            $proyecto->update();
-
-            HistoricoProyecto::create([
-                'user_id' => auth()->user()->id,
-                'proyecto_id' => $id,
-                'accion' => $estatusRevisar->nombre,
-                'motivo' => $motivo
-            ]);
-            $subject = 'Planilla de Proyecto ' . $proyecto->nro_solicitud . ' Devuelta';
-            $mensaje = 'Estimado ciudadano, La planilla de proyecto N°:' . $proyecto->nro_planilla . ' registrada en el Sistema de Gestión de Proyectos 5to Vertice ha sido Rechazada.';
-            $view = 'emails.proyectos.revision';
-            $email = $this->SendMail($proyecto->user_id, $proyecto, $subject, $mensaje, $view, $estatusRevisar->id, $motivo);
-            if ($email == true) {
-                Flash::success('Solicitud devuelta y correo enviado al usuario solicitante.');
-                return redirect()->route('proyectos.index');
-            } else {
-                Flash::success('Solicitud devuelta');
-                return redirect()->route('proyectos.index');
-            }
-        } elseif ($estatus === 'navegando') {
-            $zarpe = PermisoZarpe::find($id);
-            $idstatus = Status::find(5);
-            $zarpe->status_id = $idstatus->id;
-            $zarpe->update();
-
-            ZarpeRevision::create([
-                'user_id' => auth()->user()->id,
-                'permiso_zarpe_id' => $id,
-                'accion' => $idstatus->nombre,
-                'motivo' => 'Navegando'
-            ]);
-            Flash::warning('Solicitud informada con el estatus de Navegando.');
-            return redirect(route('permisoszarpes.index'));
-        } elseif ($estatus === 'anulado_sar') {
-            $zarpe = PermisoZarpe::find($id);
-            $idstatus = Status::find(8);
-            $zarpe->status_id = $idstatus->id;
-            $zarpe->update();
-
-            ZarpeRevision::create([
-                'user_id' => auth()->user()->id,
-                'permiso_zarpe_id' => $id,
-                'accion' => $idstatus->nombre,
-                'motivo' => 'Anulado por SAR'
-            ]);
-            Flash::error('Solicitud Anulada por SAR.');
-            return redirect(route('permisoszarpes.index'));
-        } elseif ($estatus === 'cerrado') {
-            $proyecto = PermisoZarpe::find($id);
-            $idstatus = Status::find(4);
-            $proyecto->status_id = $idstatus->id;
-            $proyecto->update();
-
-            Flash::info('Solicitud de Zarpe Cerrada.');
-            return redirect(route('permisoszarpes.index'));
-        } elseif ($estatus === 'anular-usuario') {
-            $zarpe = PermisoZarpe::find($id);
-            $idstatus = Status::find(6);
-            $zarpe->status_id = $idstatus->id;
-            $zarpe->update();
-            if (isset($_GET['motivo'])) {
+        switch ($estatus) {
+            case 'revisar':
+                $newEstatus = Estatus::find(2);
+                $motivo = 'Revisado exitosamente';
+                $subject = 'Planilla de Proyecto ' . $proyecto->nro_solicitud . ' Revisada';
+                $mensaje = 'Estimado ciudadano, La planilla de proyecto N°:' . $proyecto->nro_planilla . ' registrada en el Sistema de Gestión de Proyectos 5to Vertice ha sido revisada exitosamente.';
+                $view = 'emails.proyectos.revision';
+                $messageFlash = 'Planilla revisada exitosamente';
+                break;
+            case 'devolver-revisor':
+                $newEstatus = Estatus::find(3);
                 $motivo = $_GET['motivo'];
-                ZarpeRevision::create([
-                    'user_id' => auth()->user()->id,
-                    'permiso_zarpe_id' => $id,
-                    'accion' => $idstatus->nombre,
-                    'motivo' => $motivo
-                ]);
-            } else {
-                ZarpeRevision::create([
-                    'user_id' => auth()->user()->id,
-                    'permiso_zarpe_id' => $id,
-                    'accion' => $idstatus->nombre,
-                    'motivo' => 'Anulada por el Usuario Solicitante'
-                ]);
-            }
-            Flash::error('Solicitud Anulada.');
-            return redirect(route('permisoszarpes.index'));
+                $subject = 'Planilla de Proyecto ' . $proyecto->nro_solicitud . ' Devuelta';
+                $mensaje = 'Estimado ciudadano, La planilla de proyecto N°:' . $proyecto->nro_planilla . ' registrada en el Sistema de Gestión de Proyectos 5to Vertice ha sido Devuelta.';
+                $view = 'emails.proyectos.revision';
+                $messageFlash = 'Planilla devuelta exitosamente';
+                break;
+            case 'aprobar':
+                $newEstatus = Estatus::find(4);
+                $motivo = 'Aprobado exitosamente';
+                $subject = 'Planilla de Proyecto ' . $proyecto->nro_solicitud . ' Aprobada';
+                $mensaje = 'Estimado ciudadano, La planilla de proyecto N°:' . $proyecto->nro_planilla . ' registrada en el Sistema de Gestión de Proyectos 5to Vertice ha sido Aprobada exitosamente.';
+                $view = 'emails.proyectos.revision';
+                $messageFlash = 'Planilla aprobada exitosamente';
+                break;
+            case 'devolver-aprobador':
+                $newEstatus = Estatus::find(5);
+                $motivo = $_GET['motivo'];
+                $subject = 'Planilla de Proyecto ' . $proyecto->nro_solicitud . ' Devuelta';
+                $mensaje = 'Estimado ciudadano, La planilla de proyecto N°:' . $proyecto->nro_planilla . ' registrada en el Sistema de Gestión de Proyectos 5to Vertice ha sido Devuelta.';
+                $view = 'emails.proyectos.revision';
+                $messageFlash = 'Planilla devuelta exitosamente';
+                break;
         }
+
+        $proyecto->estatus_id = $newEstatus->id;
+        $proyecto->update();
+
+        HistoricoProyecto::create([
+            'user_id' => auth()->user()->id,
+            'proyecto_id' => $id,
+            'accion' => $newEstatus->nombre,
+            'motivo' => $motivo,
+        ]);
+        $email = $this->SendMail($proyecto->user_id, $proyecto, $subject, $mensaje, $view, $newEstatus->id);
+        Flash::success($messageFlash);
+        return redirect()->route('proyectos.index');
     }
 }

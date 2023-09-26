@@ -35,18 +35,27 @@
                             </a>
                         @endcan
                     @endif
-                    @if ($proyecto->estatus->id == '1' || $proyecto->estatus->id == '2')
-                        @can('devolver-proyecto')
+                    @if ($proyecto->estatus->id == '1' || $proyecto->estatus->id == '5')
+                        @can('devolver-proyecto-revisor')
                             <!-- Button trigger modal -->
                             <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-rechazo"
-                                onclick="modalDevolver({{ $proyecto->id }},'{{ $proyecto->nro_planilla }}')">
+                                onclick="modalDevolverRevisor({{ $proyecto->id }},'{{ $proyecto->nro_planilla }}')">
                                 <i class="fa fa-ban"></i>
                             </a>
                         @endcan
+                    @endif
+                    @if ($proyecto->estatus->id == '2')
                         @can('aprobar-proyecto')
                             <a data-route="{{ route('proyectos.updateStatus', [$proyecto->id, 'aprobar']) }}"
                                 class="btn btn-success btn-sm confirmation" title="Aprobar" data-action="APROBAR">
                                 <i class="fa-solid fa-check-double"></i>
+                            </a>
+                        @endcan
+                        @can('devolver-proyecto-aprobador')
+                            <!-- Button trigger modal -->
+                            <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-rechazo"
+                                onclick="modalDevolverAprobador({{ $proyecto->id }},'{{ $proyecto->nro_planilla }}')">
+                                <i class="fa fa-ban"></i>
                             </a>
                         @endcan
                     @endif

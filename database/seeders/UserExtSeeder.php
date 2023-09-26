@@ -20,18 +20,18 @@ class UserExtSeeder extends Seeder
             'nombres' => 'User Autor',
             'apellidos' => 'Prueba',
             'email' => 'user_autor@user.com',
-            'numero_identificacion'=>'11111111',
+            'numero_identificacion' => '11111111',
             'email_verified_at' => now(),
             'password' => Hash::make('123456789'), // password
             'remember_token' => Str::random(10),
             'tipo_usuario' => 'Usuario Externo',
-            'institucion_id'=>30
+            'institucion_id' => 30
 
         ]);
         $user->assignRole('Autor Origen');
 
         $user = User::create([
-            'nombres' => 'User',
+            'nombres' => 'User Revisor',
             'apellidos' => 'Prueba',
             'email' => 'user_revisor@user.com',
             'numero_identificacion' => '22222222',
@@ -46,7 +46,7 @@ class UserExtSeeder extends Seeder
         $user->assignRole('Revisor Origen');
 
         $user = User::create([
-            'nombres' => 'User',
+            'nombres' => 'Aprobador Origen',
             'apellidos' => 'Prueba',
             'email' => 'user_aprobador@user.com',
             'numero_identificacion' => '33333333',
@@ -73,6 +73,6 @@ class UserExtSeeder extends Seeder
             'institucion_id' => 1
 
         ]);
-        $user->assignRole('Revisor Destino');
+        $user->assignRole('Aprobador Destino');
     }
 }

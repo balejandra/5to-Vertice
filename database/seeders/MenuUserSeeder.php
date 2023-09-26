@@ -240,7 +240,7 @@ class MenuUserSeeder extends Seeder
 
         $busqueda = Menu::create([
             'name' => 'Búsqueda',
-            'url' => 'proyectos/busqueda',
+            'url' => 'busqueda-proyectos',
             'order' => '2',
             'parent' => $menugestion['id'],
             'icono' => 'fas fa-search-plus',

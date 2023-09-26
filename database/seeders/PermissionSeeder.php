@@ -81,10 +81,12 @@ class PermissionSeeder extends Seeder
             'actualizar-proyecto',
             'revisar-proyecto',
             'aprobar-proyecto',
-            'devolver-proyecto',
+            'devolver-proyecto-revisor',
+            'devolver-proyecto-aprobador',
             'anular-proyecto-destino',
             'anular-proyecto-origen',
             'listar-proyectos-todos',
+            'cerrar-proyecto',
             //admin
             'listar-proyectos-generados', //usuariosweb
             'listar-proyectos-origen-autor',

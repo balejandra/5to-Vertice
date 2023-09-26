@@ -39,13 +39,14 @@ class RoleHasPermissionSeeder extends Seeder
             'listar-proyectos-origen-autor',
             'listar-notificaciones',
             'consultar-notificaciones',
+            'anular-proyecto-origen',
             ])->get();
         Role::findOrFail(3)->permissions()->sync($autororigen_permissions->pluck('id'));
 
         //Revisor Origen
         $revisorOrigen=Permission::whereIn('name', [
             'consultar-proyecto',
-            'devolver-proyecto',
+            'devolver-proyecto-revisor',
             'revisar-proyecto',
             'listar-proyectos-origen-revisor',
             'listar-notificaciones',
@@ -58,7 +59,7 @@ class RoleHasPermissionSeeder extends Seeder
         $aprobadorOrigen=Permission::whereIn('name', [
             'consultar-proyecto',
             'aprobar-proyecto',
-            'devolver-proyecto',
+            'devolver-proyecto-aprobador',
             'listar-proyectos-origen-aprobador',
             'listar-notificaciones',
             'consultar-notificaciones',
@@ -71,6 +72,8 @@ class RoleHasPermissionSeeder extends Seeder
             'listar-proyectos-destino_revisor',
             'consultar-notificaciones',
             'listar-notificaciones',
+            'anular-proyecto-destino',
+            'cerrar-proyecto'
         ])->get();
         Role::findOrFail(6)->permissions()->sync($revisorDestino_permissions->pluck('id'));
 
@@ -80,6 +83,7 @@ class RoleHasPermissionSeeder extends Seeder
             'listar-proyectos-destino_aprobador',
             'consultar-notificaciones',
             'listar-notificaciones',
+            'cerrar-proyecto'
             ])->get();
         Role::findOrFail(7)->permissions()->sync($revisorDestino_permissions->pluck('id'));
 

@@ -510,3 +510,8 @@ Breadcrumbs::for('notificaciones.show', function (BreadcrumbTrail $trail, Notifi
     $trail->parent('notificaciones.index');
     $trail->push($notificacion->nombre, route('notificaciones.show', $notificacion->id));
 });
+
+Breadcrumbs::for('proyectos.busqueda', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Busqueda', route('proyectos.busqueda'));
+});

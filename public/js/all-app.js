@@ -120,11 +120,18 @@ function cambiar() {
     }
 }
 
-function modalDevolver(id, solicitud) {
+function modalDevolverRevisor(id, solicitud) {
     var soli = document.getElementById('nro_planilla');
     soli.textContent = solicitud
     let frm1 = document.getElementById('devolver_proyecto');
-    frm1.setAttribute('action', route('proyectos.updateStatus', {id: id, estatus: 'devolver'}));
+    frm1.setAttribute('action', route('proyectos.updateStatus', {id: id, estatus: 'devolver-revisor'}));
+}
+
+function modalDevolverAprobador(id, solicitud) {
+    var soli = document.getElementById('nro_planilla');
+    soli.textContent = solicitud
+    let frm1 = document.getElementById('devolver_proyecto');
+    frm1.setAttribute('action', route('proyectos.updateStatus', {id: id, estatus: 'devolver-aprobador'}));
 }
 
 function motivoDevolucion() {
