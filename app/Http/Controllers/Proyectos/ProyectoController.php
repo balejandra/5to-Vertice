@@ -47,7 +47,9 @@ class ProyectoController extends Controller
             return view('proyectos.info.index')->with('proyectos', $proyectos);
         } elseif (auth()->user()->hasPermissionTo('listar-proyectos-origen-revisor')) {
             $proyectos = Proyecto::where('institucion_id', $userAuth->institucion_id)->get();
-            // dd($proyectos);
+            return view('proyectos.info.index')->with('proyectos', $proyectos);
+        } elseif (auth()->user()->hasPermissionTo('listar-proyectos-origen-aprobador')) {
+            $proyectos = Proyecto::where('institucion_id', $userAuth->institucion_id)->where('estatus_id', '=', 2)->get();
             return view('proyectos.info.index')->with('proyectos', $proyectos);
         }
     }
@@ -394,23 +396,25 @@ class ProyectoController extends Controller
         }
     }
 
-    public function SendMail($userIdTo, $proyecto, $tituloMail, $contenidoMail, $vistaMail)
+    public function SendMail($userIdTo, $proyecto, $tituloMail, $contenidoMail, $vistaMail, $idEstatus = null, $motivoEstatus = null)
     {
         $email = new MailProyectosController();
         $userMail = User::find($userIdTo);
         $dataMail = [
             'nro' => $proyecto->nro_planilla,
             'nombre' => $proyecto->nombre_proyecto,
-            'institucion' => $userMail->institucion->nombre,
+            'institucion' => $proyecto->institucion->nombre,
             'jefe_proyecto' => $proyecto->jefe_proyecto,
             'costo_total' => $proyecto->costo_total_proyecto,
             'mensaje' => $contenidoMail,
+            'idEstatus' => $idEstatus,
+            'motivo' => $motivoEstatus,
         ];
 
         $mail = $email->mailProyecto($userMail->email, $tituloMail, $dataMail, $vistaMail);
 
         if ($mail) {
-            $notification = new NotificacionesController();
+            $notification = new NotificacionController();
             $dataNotification = [
                 'user_id' => $userIdTo,
                 'titulo' => $tituloMail,
@@ -428,80 +432,53 @@ class ProyectoController extends Controller
     public function updateStatus($id, $estatus)
     {
         $proyecto = Proyecto::find($id);
+        $solicitante = User::find($proyecto->user_id);
         $notificacion = new NotificacionController();
-        if ($estatus === 'pendiente') {
-            $estatusPendiente = Estatus::find(1);
-            $solicitante = User::find($proyecto->user_id);
-            $proyecto->estatus_id = $estatusPendiente->id;
+        if ($estatus === 'revisar') {
+            $estatusRevisar = Estatus::find(2);
+            $proyecto->estatus_id = $estatusRevisar->id;
             $proyecto->update();
 
             HistoricoProyecto::create([
                 'user_id' => auth()->user()->id,
                 'proyecto_id' => $id,
-                'accion' => $estatusPendiente->nombre,
+                'accion' => $estatusRevisar->nombre,
                 'motivo' => 'Revisado exitosamente'
             ]);
-            $email = new MailProyectosController();
+            $subject = 'Planilla de Proyecto ' . $proyecto->nro_solicitud . ' Revisada';
             $mensaje = 'Estimado ciudadano, La planilla de proyecto N°:' . $proyecto->nro_planilla . ' registrada en el Sistema de Gestión de Proyectos 5to Vertice ha sido revisada exitosamente.';
-            $data = [
-                'id' => $id,
-                'idstatus' => $estatusPendiente->id,
-                'status' => $estatusPendiente->nombre,
-                'nombre_buque' => $buque,
-                'origen' => $capitania->nombre,
-                'destino' => $estnauticoDestino->nombre,
-                'matricula' => $proyecto->matricula,
-                'mensaje' => $mensaje,
-            ];
-            $view = 'emails.zarpes.revision';
-            $subject = 'Solicitud de permiso de Zarpe ' . $proyecto->nro_solicitud;
-            $email->mailZarpePDF($solicitante->email, $subject, $data, $view);
-            $notificacion->storeNotificaciones($proyecto->user_id, $subject, $mensaje, "Zarpe Nacional");
-
-            Flash::success('Solicitud aprobada y correo enviado al usuario solicitante.');
-            return redirect(route('permisoszarpes.index'));
-
-        } elseif ($estatus === 'rechazado') {
-            $motivo = $_GET['motivo'];
-            if ($proyecto->bandera == 'extranjera') {
-                $buqueconsex = PermisoEstadia::where('id', $proyecto->permiso_estadia_id)->first();
-                $buque = $buqueconsex->nombre_buque;
+            $view = 'emails.proyectos.revision';
+            $email = $this->SendMail($proyecto->user_id, $proyecto, $subject, $mensaje, $view, $estatusRevisar->id);
+            if ($email == true) {
+                Flash::success('Solicitud revisada y correo enviado al usuario solicitante.');
+                return redirect()->route('proyectos.index');
             } else {
-                $buqueconsnac = Renave_data::where('matricula_actual', $proyecto->matricula)->first();
-                $buque = $buqueconsnac->nombrebuque_actual;
+                Flash::success('Solicitud revisada');
+                return redirect()->route('proyectos.index');
             }
-            $idstatus = Status::find(2);
-            $solicitante = User::find($proyecto->user_id);
-            $proyecto->status_id = $idstatus->id;
+        } elseif ($estatus === 'devolver') {
+            $motivo = $_GET['motivo'];
+            $estatusRevisar = Estatus::find(4);
+            $proyecto->estatus_id = $estatusRevisar->id;
             $proyecto->update();
-            ZarpeRevision::create([
+
+            HistoricoProyecto::create([
                 'user_id' => auth()->user()->id,
-                'permiso_zarpe_id' => $id,
-                'accion' => $idstatus->nombre,
+                'proyecto_id' => $id,
+                'accion' => $estatusRevisar->nombre,
                 'motivo' => $motivo
             ]);
-            $email = new MailController();
-            $mensaje = 'Estimado ciudadano, La notificación de zarpe N°:' . $proyecto->nro_solicitud . ' registrada en el Sistema para el Control de Zarpes
-    para Embarcaciones Recreativas ha sido Rechazada.';
-            $data = [
-                'id' => $id,
-                'idstatus' => $idstatus->id,
-                'status' => $idstatus->nombre,
-                'nombre_buque' => $buque,
-                'origen' => $capitania->nombre,
-                'destino' => $estnauticoDestino->nombre,
-                'matricula' => $proyecto->matricula,
-                'motivo' => $motivo,
-                'mensaje' => $mensaje
-            ];
-            $view = 'emails.zarpes.revision';
-            $subject = 'Solicitud de Zarpe ' . $proyecto->nro_solicitud;
-            $email->mailZarpe($solicitante->email, $subject, $data, $view);
-            $notificacion->storeNotificaciones($proyecto->user_id, $subject, $mensaje, "Zarpe Nacional");
-
-            Flash::error('Solicitud rechazada y correo enviado al usuario solicitante.');
-            return redirect(route('permisoszarpes.index'));
-
+            $subject = 'Planilla de Proyecto ' . $proyecto->nro_solicitud . ' Devuelta';
+            $mensaje = 'Estimado ciudadano, La planilla de proyecto N°:' . $proyecto->nro_planilla . ' registrada en el Sistema de Gestión de Proyectos 5to Vertice ha sido Rechazada.';
+            $view = 'emails.proyectos.revision';
+            $email = $this->SendMail($proyecto->user_id, $proyecto, $subject, $mensaje, $view, $estatusRevisar->id, $motivo);
+            if ($email == true) {
+                Flash::success('Solicitud devuelta y correo enviado al usuario solicitante.');
+                return redirect()->route('proyectos.index');
+            } else {
+                Flash::success('Solicitud devuelta');
+                return redirect()->route('proyectos.index');
+            }
         } elseif ($estatus === 'navegando') {
             $zarpe = PermisoZarpe::find($id);
             $idstatus = Status::find(5);
@@ -516,7 +493,6 @@ class ProyectoController extends Controller
             ]);
             Flash::warning('Solicitud informada con el estatus de Navegando.');
             return redirect(route('permisoszarpes.index'));
-
         } elseif ($estatus === 'anulado_sar') {
             $zarpe = PermisoZarpe::find($id);
             $idstatus = Status::find(8);
@@ -531,7 +507,6 @@ class ProyectoController extends Controller
             ]);
             Flash::error('Solicitud Anulada por SAR.');
             return redirect(route('permisoszarpes.index'));
-
         } elseif ($estatus === 'cerrado') {
             $proyecto = PermisoZarpe::find($id);
             $idstatus = Status::find(4);
@@ -540,7 +515,6 @@ class ProyectoController extends Controller
 
             Flash::info('Solicitud de Zarpe Cerrada.');
             return redirect(route('permisoszarpes.index'));
-
         } elseif ($estatus === 'anular-usuario') {
             $zarpe = PermisoZarpe::find($id);
             $idstatus = Status::find(6);
@@ -566,5 +540,4 @@ class ProyectoController extends Controller
             return redirect(route('permisoszarpes.index'));
         }
     }
-
 }

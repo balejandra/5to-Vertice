@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Proyectos\NotificacionController;
 use App\Http\Controllers\Proyectos\NotificacionesController;
 use App\Http\Controllers\Proyectos\ProyectoController;
 use Illuminate\Support\Facades\Route;
@@ -47,10 +48,10 @@ Route::middleware('auth')->group(function () {
 
     /*UPDATE ESTATUS PROYECTOS*/
     Route::get('proyectos/update-estatus/{id}/{estatus}', [ProyectoController::class, 'updateStatus'])->name('proyectos.updateStatus');
-    
+
     /*NOTIFICACIONES*/
-    Route::get('notificaciones/index', [NotificacionesController::class, 'index'])->name('notificaciones.index');
-    Route::get('notificaciones/{notificacion}', [NotificacionesController::class, 'show'])->name('notificaciones.show');
+    Route::get('notificaciones/index', [NotificacionController::class, 'index'])->name('notificaciones.index');
+    Route::get('notificaciones/{notificacion}', [NotificacionController::class, 'show'])->name('notificaciones.show');
 
 
 });

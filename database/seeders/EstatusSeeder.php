@@ -27,18 +27,18 @@ class EstatusSeeder extends Seeder
             ],
             [
                 'id'=>3,
-                'nombre'=>'Aprobado',
+                'nombre'=>'Devuelto Revisor',
                 'created_at'=>now()
             ],
             [
-                'id'=>4,
-                'nombre'=>'Rechazado',
-                'created_at'=>now()
+                'id' => 4,
+                'nombre' => 'Aprobado',
+                'created_at' => now()
             ],
             [
-                'id'=>5,
-                'nombre'=>'Aprobado Final',
-                'created_at'=>now()
+                'id' => 5,
+                'nombre' => 'Devuelto Aprobador',
+                'created_at' => now()
             ],
             [
                 'id'=>6,

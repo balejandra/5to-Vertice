@@ -5,7 +5,7 @@
     <b>Nro. de Planilla:</b> {{ $nro }} <br>
     <b>Nombre:</b> {{ $nombre }} <br>
     <b>Costo total:</b> {{ $costo_total }} <br>
-    @if ($idstatus==2)
+    @if ($idEstatus==2)
     <h2>Motivo Rechazo: {{$motivo}} </h2>
     @endif
 @endcomponent

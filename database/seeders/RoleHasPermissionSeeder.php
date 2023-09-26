@@ -45,7 +45,8 @@ class RoleHasPermissionSeeder extends Seeder
         //Revisor Origen
         $revisorOrigen=Permission::whereIn('name', [
             'consultar-proyecto',
-            'aprobar-proyecto',
+            'devolver-proyecto',
+            'revisar-proyecto',
             'listar-proyectos-origen-revisor',
             'listar-notificaciones',
             'consultar-notificaciones',
@@ -57,6 +58,7 @@ class RoleHasPermissionSeeder extends Seeder
         $aprobadorOrigen=Permission::whereIn('name', [
             'consultar-proyecto',
             'aprobar-proyecto',
+            'devolver-proyecto',
             'listar-proyectos-origen-aprobador',
             'listar-notificaciones',
             'consultar-notificaciones',
@@ -83,7 +85,7 @@ class RoleHasPermissionSeeder extends Seeder
 
            //Usuario Reporte
         $usuario_reporte=Permission::whereIn('name', [
-            'consultar-zarpe',
+            'consultar-proyecto',
             'busqueda-avanzada',
             'busqueda-simple',
             'listar-busqueda',

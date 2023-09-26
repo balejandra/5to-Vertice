@@ -111,3 +111,36 @@ $('.confirmation_other').on('click', function (event) {
     });
 })
 
+function cambiar() {
+    password1 = document.getElementById('password-div')
+    if ($("#password_change").is(':checked')) {
+        password1.style.display = 'block';
+    } else {
+        password1.style.display = 'none';
+    }
+}
+
+function modalDevolver(id, solicitud) {
+    var soli = document.getElementById('nro_planilla');
+    soli.textContent = solicitud
+    let frm1 = document.getElementById('devolver_proyecto');
+    frm1.setAttribute('action', route('proyectos.updateStatus', {id: id, estatus: 'devolver'}));
+}
+
+function motivoDevolucion() {
+    $motivo = $("#motivo1 option:selected").text();
+    if ($motivo == 'Observaciones en los documentos') {
+        table = document.getElementById("inputmotivo");
+        table.style.display = 'block';
+        $("#motivo1").attr("name", "motivofalso");
+        $("#motivo2").attr("name", "motivo");
+        document.querySelector('#motivo2').required = true;
+
+    } else {
+        table = document.getElementById("inputmotivo");
+        table.style.display = 'none';
+        $("#motivo1").attr("name", "motivo");
+        $("#motivo2").attr("name", "motivofalso");
+        document.querySelector('#motivo2').required = false;
+    }
+}
