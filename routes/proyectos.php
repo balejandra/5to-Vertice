@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
     /*RUTAS CONSULTAS*/
     Route::get('busqueda-proyectos', [BusquedaController::class, 'index'])->name('proyectos.busqueda');
 
-    Route::post('proyectos/busqueda/queries', [BusquedaController::class, 'querie'])->name('busqueda.queries');
+    Route::post('busqueda-proyectos', [BusquedaController::class, 'searchProyecto'])->name('busqueda.queries');
 
 
 });

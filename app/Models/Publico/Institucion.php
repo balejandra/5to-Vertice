@@ -63,6 +63,11 @@ class Institucion extends Model implements Auditable
 
     public function sector()
     {
-        return $this->belongsTo(Sector::class);
+        return $this->belongsTo(Sector::class,'sector_id');
+    }
+
+    public function proyectos()
+    {
+        return $this->hasMany(Proyecto::class);
     }
 }

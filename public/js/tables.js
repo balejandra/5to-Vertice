@@ -15,6 +15,7 @@ $(document).ready( function () {
         $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
     } );
 
+    
     $.fn.dataTable.moment( 'DD-MM-YYYY' );
     $.fn.dataTable.render.datetime('YYYY-MM-DD H:mm:ss', 'DD-MM-YYYY')
     $('table.display').DataTable({
@@ -41,4 +42,3 @@ $(document).ready( function () {
 
 
 } );
-

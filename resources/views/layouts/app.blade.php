@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/@coreui/@coreui.css') }}">
+<link rel="stylesheet" href="{{asset('assets/bootstrap-select-1.14.0-beta2/dist/css/bootstrap-select.min.css')}}">
+
+
 
     @routes
 </head>
@@ -68,7 +71,8 @@
 <script src="{{ asset('js/tables.js') }}"></script>
 <script src="{{ asset('js/all-app.js') }}"></script>
 <script src="{{ asset('assets/datatables/datetime-moment.js') }}"></script>
-
+<script src="{{asset('assets/bootstrap-select-1.14.0-beta2/dist/js/bootstrap-select.min.js')}}"></script>
+<script src="{{asset('assets/bootstrap-select-1.14.0-beta2/dist/js/i18n/defaults-es_ES.min.js')}}"></script>
 
 @stack('scripts')
 

@@ -92,10 +92,9 @@ class Proyecto extends Model
         'user_id' => 'required|integer'
     ];
 
-    // Relación con Institucion
     public function institucion()
     {
-        return $this->belongsTo(Institucion::class, 'institucion_id');
+        return $this->belongsTo(Institucion::class);
     }
 
     // Relación con Origen
@@ -162,5 +161,4 @@ class Proyecto extends Model
     {
         return $this->belongsTo(Estatus::class, 'estatus_id');
     }
-
 }
