@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Proyectos;
+namespace App\Http\Controllers\Publico;
 
 use App\Http\Controllers\Controller;
-use App\Models\Proyectos\Notificacion;
+use App\Models\Publico\Notificacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,7 +25,7 @@ class NotificacionController extends Controller
             ->get();
 
         // Devuelve una vista parcial que representa la lista de notificaciones filtradas
-        return view('proyectos.notificaciones.list-search', compact('notificaciones'));
+        return view('publico.notificaciones.list-search', compact('notificaciones'));
     }
 
     /**
@@ -38,7 +38,7 @@ class NotificacionController extends Controller
             ->orderBy('created_at', 'desc')->get();
         $this->statusNotificaciones();
 
-        return view('proyectos/notificaciones/index')
+        return view('publico.notificaciones.index')
             ->with('notificaciones', $notificaciones);
     }
 
@@ -83,7 +83,7 @@ class NotificacionController extends Controller
             $notificacion->save();
         }
 
-        return view('proyectos.notificaciones.show', compact('notificacion'));
+        return view('publico.notificaciones.show', compact('notificacion'));
     }
 
 

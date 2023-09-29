@@ -4,8 +4,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Proyectos\BusquedaController;
 use App\Http\Controllers\Proyectos\ProyectoController;
-use App\Http\Controllers\Proyectos\NotificacionController;
-use App\Http\Controllers\Proyectos\NotificacionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,15 +49,8 @@ Route::middleware('auth')->group(function () {
     /*UPDATE ESTATUS PROYECTOS*/
     Route::get('proyectos/update-estatus/{id}/{estatus}', [ProyectoController::class, 'updateStatus'])->name('proyectos.updateStatus');
 
-    /*NOTIFICACIONES*/
-    Route::get('/notificaciones/filter', [NotificacionController::class, 'busqueda'])->name('notificaciones.filter');
-    Route::get('notificaciones/index', [NotificacionController::class, 'index'])->name('notificaciones.index');
-    Route::get('notificaciones/{notificacion}', [NotificacionController::class, 'show'])->name('notificaciones.show');
-
     /*RUTAS CONSULTAS*/
     Route::get('busqueda-proyectos', [BusquedaController::class, 'index'])->name('proyectos.busqueda');
 
     Route::post('busqueda-proyectos', [BusquedaController::class, 'searchProyecto'])->name('busqueda.queries');
-
-
 });

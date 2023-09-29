@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Proyectos;
+namespace App\Models\Publico;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +13,7 @@ class Notificacion extends Model implements Auditable
     use SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
-    protected $connection = 'pgsql_proyectos_schema';
+    protected $connection = 'pgsql_public_schema';
     public $table = 'notificaciones';
 
     protected $dates = ['deleted_at'];

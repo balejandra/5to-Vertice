@@ -1,24 +1,16 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Publico\AuditsController;
-use App\Http\Controllers\Publico\EstatusController;
-use App\Http\Controllers\Publico\InstitucionController;
-use App\Http\Controllers\Publico\Menu_rolController;
 use App\Http\Controllers\Publico\MenuController;
-use App\Http\Controllers\Publico\PermissionController;
 use App\Http\Controllers\Publico\RoleController;
 use App\Http\Controllers\Publico\UserController;
-use App\Http\Controllers\Taxonomia\CadenciaInvestigativaController;
-use App\Http\Controllers\Taxonomia\FinInvestigacionController;
-use App\Http\Controllers\Taxonomia\FuncionController;
-use App\Http\Controllers\Taxonomia\OrigenController;
-use App\Http\Controllers\Taxonomia\ParticipacionController;
-use App\Http\Controllers\Taxonomia\TipoActividadController;
-use App\Http\Controllers\Taxonomia\TipoDesarrolloController;
-use App\Http\Controllers\Taxonomia\TipoInvestigacionController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Publico\AuditsController;
+use App\Http\Controllers\Publico\Menu_rolController;
+use App\Http\Controllers\Publico\PermissionController;
+use App\Http\Controllers\Publico\InstitucionController;
+use App\Http\Controllers\Publico\NotificacionController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,7 +67,10 @@ Route::middleware('auth')->group(function () {
     Route::get('institucionDeleted.index', [InstitucionController::class, 'indexInstitucionDeleted'])->name('institucionDeleted.index');
     Route::get('institucionDeleted/{institucione}', [InstitucionController::class, 'restoreInstitucionDeleted'])->name('institucionDeleted.restore');
 
-
+    /*NOTIFICACIONES*/
+    Route::get('/notificaciones/filter', [NotificacionController::class, 'busqueda'])->name('notificaciones.filter');
+    Route::get('notificaciones/index', [NotificacionController::class, 'index'])->name('notificaciones.index');
+    Route::get('notificaciones/{notificacion}', [NotificacionController::class, 'show'])->name('notificaciones.show');
 });
 
 require __DIR__ . '/auth.php';

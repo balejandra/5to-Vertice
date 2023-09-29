@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('pgsql_proyectos_schema')->create('notificaciones', function (Blueprint $table) {
+        Schema::create('notificaciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('public.users')
                 ->onDelete('cascade')
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::connection('pgsql_proyectos_schema')->dropIfExists('notificaciones');
+        Schema::dropIfExists('notificaciones');
     }
 };
