@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers\Proyectos;
 
-use App\Http\Controllers\Controller;
-use App\Models\Proyectos\HistoricoProyecto;
-use App\Models\Proyectos\Proyecto;
+use App\Models\User;
+use Laracasts\Flash\Flash;
+use Illuminate\Http\Request;
 use App\Models\Publico\Estatus;
-use App\Models\Publico\Institucion;
-use App\Models\Taxonomia\CadenciaInvestigativa;
-use App\Models\Taxonomia\FinInvestigacion;
-use App\Models\Taxonomia\Funcion;
-use App\Models\Taxonomia\LineaInvestigacion;
 use App\Models\Taxonomia\Origen;
+use App\Models\Taxonomia\Funcion;
+use App\Models\Proyectos\Proyecto;
+use App\Models\Publico\Institucion;
+use App\Http\Controllers\Controller;
 use App\Models\Taxonomia\Participacion;
 use App\Models\Taxonomia\TipoActividad;
 use App\Models\Taxonomia\TipoDesarrollo;
+use App\Models\Taxonomia\FinInvestigacion;
+use App\Models\Proyectos\HistoricoProyecto;
 use App\Models\Taxonomia\TipoInvestigacion;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Laracasts\Flash\Flash;
+use App\Models\Taxonomia\LineaInvestigacion;
+use App\Models\Taxonomia\CadenciaInvestigativa;
+use App\Http\Controllers\Publico\NotificacionController;
 
 class ProyectoController extends Controller
 {

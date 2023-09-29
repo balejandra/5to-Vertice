@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
+use Illuminate\View\View;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
-use Illuminate\View\View;
+use App\Http\Controllers\Publico\NotificacionController;
 
 class PasswordResetLinkController extends Controller
 {
@@ -36,9 +38,21 @@ class PasswordResetLinkController extends Controller
             $request->only('email')
         );
 
+        $user = User::select('id')->where('email', $request->only('email'))->first();
+        $notification = new NotificacionController();
+        $dataNotification = [
+            'user_id' => $user->id,
+            'titulo' => "Recuperación de contraseña",
+            'contenido' => "Saludos, se ha realizado una nueva solicitud de contraseña con su usuario, debe revisar su correo electrónico
+        y seguir las indicaciones para realizar el restablecimiento de su contraseña.",
+            'tipo' => 'General',
+            'visto' => false,
+        ];
+        $notification->store($dataNotification);
+
         return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
+            ? back()->with('status', __($status))
+            : back()->withInput($request->only('email'))
+            ->withErrors(['email' => __($status)]);
     }
 }
