@@ -10,6 +10,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
+                            <i class="fa fa-sheet-plastic"></i>
                             <strong>Consultar Planilla de Proyectos</strong>
                             <div class="card-header-actions">
                                 <a href="{{ route('proyectos.index') }} " class="btn btn-primary btn-sm">Listado</a>

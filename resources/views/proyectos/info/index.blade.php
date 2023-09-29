@@ -10,7 +10,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <i class="fas fa-ship"></i>
+                            <i class="fa fa-sheet-plastic"></i>
                             <strong>Proyectos</strong>
                             <div class="card-header-actions">
                                 <a class="btn btn-primary btn-sm" href="{{ route('proyectos.step1') }}">Nuevo</a>
