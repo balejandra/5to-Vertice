@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('proyectos/update-estatus/{id}/{estatus}', [ProyectoController::class, 'updateStatus'])->name('proyectos.updateStatus');
 
     /*NOTIFICACIONES*/
+    Route::get('/notificaciones/filter', [NotificacionController::class, 'busqueda'])->name('notificaciones.filter');
     Route::get('notificaciones/index', [NotificacionController::class, 'index'])->name('notificaciones.index');
     Route::get('notificaciones/{notificacion}', [NotificacionController::class, 'show'])->name('notificaciones.show');
 

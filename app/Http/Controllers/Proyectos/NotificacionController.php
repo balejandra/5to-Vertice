@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Proyectos\Notificacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class NotificacionController extends Controller
 {
@@ -16,14 +15,29 @@ class NotificacionController extends Controller
         $this->middleware('permission:consultar-notificaciones', ['only' => ['show']]);
     }
 
+    public function busqueda(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        // Realiza la búsqueda de notificaciones en función del término de búsqueda ($keyword)
+        $notificaciones = Notificacion::where('titulo', 'ILIKE', "%$keyword%")
+            ->orWhere('contenido', 'ILIKE', "%$keyword%")
+            ->get();
+
+        // Devuelve una vista parcial que representa la lista de notificaciones filtradas
+        return view('proyectos.notificaciones.list-search', compact('notificaciones'));
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $user_id = auth()->id();
-        $notificaciones = Notificacion::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+        $notificaciones = Notificacion::where('user_id', $user_id)
+            ->orderBy('created_at', 'desc')->get();
         $this->statusNotificaciones();
+
         return view('proyectos/notificaciones/index')
             ->with('notificaciones', $notificaciones);
     }
@@ -71,6 +85,7 @@ class NotificacionController extends Controller
 
         return view('proyectos.notificaciones.show', compact('notificacion'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

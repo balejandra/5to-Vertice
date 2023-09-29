@@ -28,6 +28,7 @@ class Notificacion extends Model implements Auditable
 
     protected $casts = [
         'id' => 'integer',
+        'user_id'=>'integer',
         'titulo' => 'string',
         'contenido' => 'string',
         'tipo' => 'string',
@@ -54,7 +55,4 @@ class Notificacion extends Model implements Auditable
     {
         return $this->belongsTo(User::class);
     }
-
-
-
 }

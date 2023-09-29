@@ -17,11 +17,14 @@ use App\Models\Taxonomia\FinInvestigacion;
 use App\Models\Taxonomia\TipoActividad;
 use App\Models\Taxonomia\LineaInvestigacion;
 use App\Models\User;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Proyecto extends Model
+
+class Proyecto extends Model implements Auditable
 {
     use HasFactory;
     use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $connection = 'pgsql_proyectos_schema';
     public $table = 'proyectos';
