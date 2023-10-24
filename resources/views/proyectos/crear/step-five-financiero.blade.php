@@ -48,10 +48,10 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="title">Costo Total del Proyecto:</label>
-                                            <input type="number" class="form-control coin" placeholder="0.00"
-                                                onkeydown="return soloNumeros(event)" min="0.00" step="0.01"
-                                                name="costo_total_proyecto" required
-                                                value="{{ $proyecto->costo_total_proyecto ?? '' }}">
+                                            <input type="text" lang="es-ES" class="form-control coin"
+                                                placeholder="0,00" onkeydown="return soloNumeros(event)"
+                                                name="costo_total_proyecto" required id="costo_total_proyecto"
+                                                value="{{ number_format($proyecto->costo_total_proyecto, 2, ',', '.') ?? '' }}">
                                             <div class="invalid-feedback">
                                                 Coto Total Requerido.
                                             </div>
@@ -61,10 +61,10 @@
                                         <div class="form-group">
                                             <label for="title">Costo del Proyecto si Fuese ejecutado por
                                                 Transnacional:</label>
-                                            <input type="number" class="form-control coin" placeholder="0.00"
+                                            <input type="text" class="form-control coin" placeholder="0.00"
                                                 onkeydown="return soloNumeros(event)" id="1"
-                                                name="costo_transnacional" min="0.00" step="0.01"
-                                                value="{{ $proyecto->costo_transnacional ?? '' }}">
+                                                name="costo_transnacional"
+                                                value="{{ number_format($proyecto->costo_transnacional, 2, ',', '.') ?? '' }}">
                                             <div class="valid-feedback">
                                                 No obligatorio.
                                             </div>
@@ -73,9 +73,9 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="title">Ahorro de la Nación:</label>
-                                            <input type="number" class="form-control coin" placeholder="0.00"
+                                            <input type="text" class="form-control coin" placeholder="0.00"
                                                 onkeydown="return soloNumeros(event)" id="1" name="ahorro_nacion"
-                                                min="0.00" step="0.01" value="{{ $proyecto->ahorro_nacion ?? '' }}">
+                                                value="{{ number_format($proyecto->ahorro_nacion, 2, ',', '.') ?? '' }}">
                                             <div class="valid-feedback">
                                                 No obligatorio.
                                             </div>
@@ -92,13 +92,30 @@
     </div>
     @push('scripts')
         <script>
-            $(".coin").change(function() {
-                this.value = parseFloat(this.value).toFixed(2);
+            function formatCurrencyInput(inputElement) {
+                inputElement.addEventListener('input', (e) => {
+                    var entrada = e.target.value.split(','),
+                        parteEntera = entrada[0].replace(/\./g, ''),
+                        parteDecimal = entrada[1],
+                        salida = parteEntera.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+
+                    e.target.value = salida + (parteDecimal !== undefined ? ',' + parteDecimal : '');
+                }, false);
+            }
+
+            // Obtén todos los elementos con la clase "costo_total_proyecto" y aplica la función
+            var elementosConClase = document.querySelectorAll('.coin');
+            elementosConClase.forEach(function(elemento) {
+                formatCurrencyInput(elemento);
             });
 
             function soloNumeros(event) {
-                if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105) && event
-                    .keyCode !== 190 && event.keyCode !== 110 && event.keyCode !== 8 && event.keyCode !== 9) {
+                if (
+                    ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105) &&
+                        event.keyCode !== 190 && event.keyCode !== 110 && event.keyCode !== 188 && event.keyCode !==
+                        8 && event
+                        .keyCode !== 9)
+                ) {
                     return false;
                 }
             }

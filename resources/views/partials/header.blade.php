@@ -36,17 +36,48 @@
                 {{ Auth::user()->email }}
 
             </a>
-            <div class="dropdown-menu dropdown-menu-end pt-0">
 
+            <div class="dropdown-menu dropdown-menu-end pt-0">
+                <div class="dropdown-header bg-light py-2">
+                    <div class="fw-semibold">
+                        Notificaciones
+                    </div>
+                </div>
                 <a class="dropdown-item" href="#">
-                    <a href="#" class="dropdown-item btn btn-default btn-flat"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fa fa-lock"></i> Cerrar Sesión
+                    <a href="#" class="dropdown-item text-left btn btn-default btn-flat">
+                        <i class="fa fa-sheet-plastic icon-profile"></i> Proyectos
+                        @if (session('notificacionesProyecto') > 0)
+                            <span class="badge badge-sm bg-info ms-2 badge-profile">
+                                {{ session('notificacionesProyecto') }}</span>
+                        @endif
+
                     </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
+                    <a href="#" class="dropdown-item text-left btn btn-default btn-flat">
+                        <i class="fa-solid fa-gear icon-profile"></i> General
+                        @if (session('notificacionesGeneral') > 0)
+                            <span class="badge badge-sm bg-secondary ms-2 badge-profile">
+                                {{ session('notificacionesGeneral') }}</span>
+                        @endif
+                    </a>
+
                 </a>
+                <div class="dropdown-header bg-light py-2">
+                    <div class="fw-semibold">
+                        Cuenta
+                    </div>
+                </div>
+                <a href="{{ route('profile.edit') }}" class="dropdown-item text-left btn btn-default btn-flat">
+                    <i class="fa-regular fa-user icon-profile "></i> Mi Perfil
+                </a>
+
+                <a href="#" class="dropdown-item text-left btn btn-default btn-flat"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fa fa-lock icon-profile"></i> Cerrar Sesión
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+
             </div>
         </li>
     </ul>

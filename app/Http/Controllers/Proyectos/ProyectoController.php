@@ -235,21 +235,29 @@ class ProyectoController extends Controller
 
     public function postCreateStep5Financiero(Request $request)
     {
+        // dd($request);
         $validatedData = $request->validate(
             [
                 'porcentaje_ejecucion_fisica' => 'nullable|numeric|between:0,100',
-                'costo_total_proyecto' => 'required|numeric|min:0',
-                'costo_transnacional' => 'nullable|numeric|min:0',
-                'ahorro_nacion' => 'nullable|numeric|min:0',
+                'costo_total_proyecto' => 'required|min:0',
+                'costo_transnacional' => 'nullable|min:0',
+                'ahorro_nacion' => 'nullable|min:0',
             ],
             [
                 'porcentaje_ejecucion_fisica.numeric' => 'El campo Porcentaje de Ejecución Física debe ser un número',
                 'porcentaje_ejecucion_fisica.between' => 'El campo Porcentaje de Ejecución Física debe estar entre 0 y 100',
                 'costo_total_proyecto.required' => 'El campo Costo Total Proyecto es obligatorio',
-                'costo_transnacional.numeric' => 'El campo Costo Transnacional debe ser un número',
-                'ahorro_nacion.numeric' => 'El campo Ahorro Nacional debe ser un número',
             ]
         );
+
+        $costoTotalProyecto  = str_replace(['.', ','], ['', '.'], $validatedData['costo_total_proyecto']);
+        $validatedData['costo_total_proyecto'] = $costoTotalProyecto;
+
+        $costo_transnacional  = str_replace(['.', ','], ['', '.'], $validatedData['costo_transnacional']);
+        $validatedData['costo_transnacional'] = $costo_transnacional;
+
+        $ahorro_nacion  = str_replace(['.', ','], ['', '.'], $validatedData['ahorro_nacion']);
+        $validatedData['ahorro_nacion'] = $ahorro_nacion;
 
         $proyecto = $request->session()->get('proyecto');
         $proyecto->fill($validatedData);

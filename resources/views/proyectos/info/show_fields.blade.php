@@ -177,7 +177,7 @@
                     Costo Total del Proyecto
                 </div>
                 <div class="col-md-3 col-sm-3 p-2">
-                    {{ $proyecto->costo_total_proyecto }}
+                    {{ number_format($proyecto->costo_total_proyecto, 2, ',', '.')  }}
                 </div>
             </div>
         </div>
@@ -189,13 +189,13 @@
                     Costo si fuese ejecutado por Transnacional
                 </div>
                 <div class="col-md-3 col-sm-3 p-2">
-                    {{ $proyecto->costo_transnacional }}
+                    {{ number_format( $proyecto->costo_transnacional, 2, ',', '.') }}
                 </div>
                 <div class="col-md-3 col-sm-3 bg-light p-2 text-th">
                     Ahorro de la Nación
                 </div>
                 <div class="col-md-3 col-sm-3 p-2">
-                    {{ $proyecto->ahorro_nacion }}
+                    {{ number_format($proyecto->ahorro_nacion, 2, ',', '.') }}
                 </div>
             </div>
         </div>

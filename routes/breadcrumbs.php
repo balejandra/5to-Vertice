@@ -24,6 +24,13 @@ Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
     $trail->push('Dashboard', route('dashboard'));
 });
 
+// Migas de pan para la ruta 'profile.edit'
+Breadcrumbs::for('profile.edit', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard'); // Reemplaza 'dashboard' por la ruta adecuada si es necesario.
+    $trail->push('Editar Perfil', route('profile.edit'));
+});
+
+
 // MENUS
 Breadcrumbs::for('menus.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');

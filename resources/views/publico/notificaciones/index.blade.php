@@ -15,6 +15,11 @@
                     </div>
 
                 </div>
+                <div class="col-9">
+
+                    <button class="btn btn-sm btn-info" id="filter-proyectos">Proyectos</button>
+                    <button class="btn btn-sm btn-secondary" id="filter-general">General</button>
+                </div>
                 <br>
             </div>
             <div class="row">

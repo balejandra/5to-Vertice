@@ -31,25 +31,21 @@ class NotificacionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user_id = auth()->id();
+        $tipo = $request->input('tipo');
+
         $notificaciones = Notificacion::where('user_id', $user_id)
+            ->when($tipo, function ($q) use ($tipo) {
+                $q->where('tipo', $tipo);
+            })
             ->orderBy('created_at', 'desc')->get();
         $this->statusNotificaciones();
 
         return view('publico.notificaciones.index')
             ->with('notificaciones', $notificaciones);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -87,21 +83,7 @@ class NotificacionController extends Controller
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.

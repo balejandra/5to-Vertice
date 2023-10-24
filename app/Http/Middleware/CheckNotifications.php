@@ -25,8 +25,20 @@ class CheckNotifications
                 ->where('visto', false)
                 ->count();
 
+            $unreadNotificationsProyectos = Notificacion::where('user_id', $userId)
+            ->where('visto', false)
+            ->where('tipo', 'Proyectos')
+            ->count();
+
+            $unreadNotificationsGeneral = Notificacion::where('user_id', $userId)
+            ->where('visto', false)
+                ->where('tipo', 'General')
+            ->count();
+
             // Actualizar la variable de sesión con la cantidad de notificaciones no leídas
             session(['notificaciones' => $unreadNotifications]);
+            session(['notificacionesProyecto' => $unreadNotificationsProyectos]);
+            session(['notificacionesGeneral' => $unreadNotificationsGeneral]);
         }
 
         return $next($request);
